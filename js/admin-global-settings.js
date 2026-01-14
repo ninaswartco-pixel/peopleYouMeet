@@ -11,6 +11,9 @@ const siteTitleInput = document.getElementById("siteTitleInput");
 const siteAuthorInput = document.getElementById("siteAuthorInput");
 const themeColorInput = document.getElementById("themeColorInput");
 const postBgColorInput = document.getElementById("postBgColorInput");
+const titleFontSelect = document.getElementById("titleFontSelect");
+const authorFontSelect = document.getElementById("authorFontSelect");
+const bodyFontSelect = document.getElementById("bodyFontSelect");
 const saveBtn = document.getElementById("saveGlobalSettingsBtn");
 
 // Handle color swatch clicks
@@ -40,6 +43,9 @@ async function loadGlobalSettings() {
       siteAuthorInput.value = data.siteAuthor || "Carla Schultz";
       themeColorInput.value = data.themeColor || "#CC5500";
       postBgColorInput.value = data.postBgColor || "#FFFFFF";
+      titleFontSelect.value = data.titleFont || "greatVibes";
+      authorFontSelect.value = data.authorFont || "italiana";
+      bodyFontSelect.value = data.bodyFont || "montserrat";
 
       // Apply theme color to current page
       if (data.themeColor) {
@@ -48,11 +54,19 @@ async function loadGlobalSettings() {
           data.themeColor
         );
       }
+      console.log("Loaded fonts:", {
+        titleFont: data.titleFont,
+        authorFont: data.authorFont,
+        bodyFont: data.bodyFont,
+      });
     } else {
       siteTitleInput.value = "The People We Meet";
       siteAuthorInput.value = "Carla Schultz";
       themeColorInput.value = "#CC5500";
       postBgColorInput.value = "#FFFFFF";
+      titleFontSelect.value = "greatVibes";
+      authorFontSelect.value = "italiana";
+      bodyFontSelect.value = "montserrat";
     }
     console.log("Settings loaded from Firestore");
   } catch (e) {
@@ -66,6 +80,9 @@ saveBtn.addEventListener("click", async () => {
   const author = siteAuthorInput.value.trim();
   const themeColor = themeColorInput.value.trim();
   const postBgColor = postBgColorInput.value.trim();
+  const titleFont = titleFontSelect.value;
+  const authorFont = authorFontSelect.value;
+  const bodyFont = bodyFontSelect.value;
 
   try {
     await setDoc(
@@ -75,6 +92,9 @@ saveBtn.addEventListener("click", async () => {
         siteAuthor: author,
         themeColor: themeColor,
         postBgColor: postBgColor,
+        titleFont: titleFont,
+        authorFont: authorFont,
+        bodyFont: bodyFont,
       },
       { merge: true }
     );
@@ -93,6 +113,9 @@ saveBtn.addEventListener("click", async () => {
       author,
       themeColor,
       postBgColor,
+      titleFont,
+      authorFont,
+      bodyFont,
     });
   } catch (e) {
     console.error("Failed to save settings:", e);

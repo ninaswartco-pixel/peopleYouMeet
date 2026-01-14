@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="css/styles.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Playfair+Display+SC:wght@400;700&amp;family=Great+Vibes&amp;family=Montserrat:wght@300;400;500&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Playfair+Display+SC:wght@400;700&amp;family=Great+Vibes&amp;family=Montserrat:wght@300;400;500&amp;family=Italiana&amp;family=Playfair+Display:wght@400;700&amp;display=swap"
       rel="stylesheet"
     />
     <link
@@ -184,5 +184,53 @@
     </main>
     <script type="module" src="js/firebase-init.js"></script>
     <script type="module" src="js/story.js"></script>
+    <script type="module">
+      import { db } from "./js/firebase-init.js";
+      import {
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+      // Load and apply fonts from Firestore
+      async function loadFonts() {
+        try {
+          const settingsDoc = await getDoc(doc(db, "siteSettings", "global"));
+          if (settingsDoc.exists()) {
+            const settings = settingsDoc.data();
+
+            const fontMap = {
+              greatVibes: '"Great Vibes", cursive',
+              italiana: '"Italiana", serif',
+              playfair: '"Playfair Display", serif',
+              cormorant: '"Cormorant Garamond", serif',
+              montserrat: '"Montserrat", sans-serif',
+            };
+
+            if (settings.titleFont) {
+              const titleFontFamily =
+                fontMap[settings.titleFont] || fontMap.greatVibes;
+              document.documentElement.style.setProperty(
+                "--title-font",
+                titleFontFamily
+              );
+            }
+
+            if (settings.bodyFont) {
+              const bodyFontFamily =
+                fontMap[settings.bodyFont] || fontMap.montserrat;
+              document.documentElement.style.setProperty(
+                "--body-font",
+                bodyFontFamily
+              );
+              document.body.style.fontFamily = bodyFontFamily;
+            }
+          }
+        } catch (error) {
+          console.error("Error loading fonts:", error);
+        }
+      }
+
+      loadFonts();
+    </script>
   </body>
 </html>

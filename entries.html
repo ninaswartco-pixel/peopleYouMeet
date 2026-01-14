@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="css/styles.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Playfair+Display+SC:wght@400;700&amp;family=Great+Vibes&amp;family=Montserrat:wght@300;400;500&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Playfair+Display+SC:wght@400;700&amp;family=Great+Vibes&amp;family=Montserrat:wght@300;400;500&amp;family=Italiana&amp;family=Playfair+Display:wght@400;700&amp;display=swap"
       rel="stylesheet"
     />
     <link
@@ -171,6 +171,38 @@
               if (title) {
                 title.textContent = settings.siteTitle;
               }
+            }
+
+            // Load and apply fonts
+            const fontMap = {
+              greatVibes: '"Great Vibes", cursive',
+              italiana: '"Italiana", serif',
+              playfair: '"Playfair Display", serif',
+              cormorant: '"Cormorant Garamond", serif',
+              montserrat: '"Montserrat", sans-serif',
+            };
+
+            if (settings.titleFont) {
+              const titleFontFamily =
+                fontMap[settings.titleFont] || fontMap.greatVibes;
+              document.documentElement.style.setProperty(
+                "--title-font",
+                titleFontFamily
+              );
+              const title = document.getElementById("siteTitle");
+              if (title) {
+                title.style.fontFamily = titleFontFamily;
+              }
+            }
+
+            if (settings.bodyFont) {
+              const bodyFontFamily =
+                fontMap[settings.bodyFont] || fontMap.montserrat;
+              document.documentElement.style.setProperty(
+                "--body-font",
+                bodyFontFamily
+              );
+              document.body.style.fontFamily = bodyFontFamily;
             }
           }
         } catch (error) {
