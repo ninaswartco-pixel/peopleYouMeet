@@ -278,22 +278,7 @@
         Logout of Session
       </a>
     </footer>
-    <div class="fixed bottom-10 right-10 flex flex-col gap-4">
-      <a
-        class="size-12 rounded-full bg-white border border-slate-100 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow group"
-        href="#"
-      >
-        <span
-          class="material-symbols-outlined text-slate-300 group-hover:text-[var(--theme-primary)] transition-colors"
-          >visibility</span
-        >
-      </a>
-      <button
-        class="size-12 rounded-full bg-[var(--theme-primary)] text-white flex items-center justify-center shadow-lg hover:brightness-90 transition-all"
-      >
-        <span class="material-symbols-outlined">save</span>
-      </button>
-    </div>
+    <!-- Removed floating eye and page circle icons -->
     <div
       class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10 backdrop-blur-sm"
       id="logout-modal"
@@ -306,6 +291,7 @@
         </p>
         <div class="flex flex-col gap-4">
           <button
+            id="logout-confirm-btn"
             class="w-full bg-[var(--theme-primary)] text-white py-4 text-[10px] uppercase tracking-[0.3em] font-bold hover:brightness-110 transition-all"
           >
             Log Out
@@ -319,6 +305,21 @@
         </div>
       </div>
     </div>
+    <script type="module">
+      import { signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+      import { auth } from "./js/firebase-init.js";
+      const logoutBtn = document.getElementById("logout-confirm-btn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", async () => {
+          try {
+            await signOut(auth);
+            window.location.href = "index.html";
+          } catch (e) {
+            alert("Logout failed. Please try again.");
+          }
+        });
+      }
+    </script>
     <script src="js/scripts.js"></script>
   </body>
 </html>
