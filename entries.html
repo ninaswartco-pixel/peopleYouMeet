@@ -76,6 +76,7 @@
               >search</span
             >
             <input
+              id="searchInput"
               class="bg-warm-beige/50 border-warm-brown/10 rounded-full pl-10 pr-4 py-1.5 text-sm font-sans focus:ring-burnt-orange focus:border-burnt-orange w-64 placeholder:text-warm-brown/30"
               placeholder="Search stories..."
               type="text"
@@ -87,21 +88,13 @@
               >Sort by</span
             >
             <select
+              id="sortSelect"
               class="bg-transparent border-none text-sm font-sans font-semibold text-warm-brown focus:ring-0 cursor-pointer hover:text-burnt-orange py-0"
             >
-              <option>New Faces</option>
-              <option>Old Faces</option>
+              <option value="new">New Faces</option>
+              <option value="old">Old Faces</option>
             </select>
           </div>
-        </div>
-        <div class="flex items-center gap-4">
-          <button
-            class="flex items-center justify-center w-10 h-10 rounded-full border border-warm-brown/10 hover:bg-warm-beige transition-colors"
-          >
-            <span class="material-symbols-outlined text-burnt-orange"
-              >edit_square</span
-            >
-          </button>
         </div>
       </div>
     </header>

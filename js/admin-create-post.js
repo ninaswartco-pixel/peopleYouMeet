@@ -104,14 +104,14 @@ saveBtn.addEventListener("click", async () => {
   console.log("Save button clicked");
 
   const title = titleInput.value.trim();
-  const date = dateInput.value;
+  const dateStr = dateInput.value;
   const content = contentInput.value.trim();
   const published = publishedInput.checked;
   const coverFile = coverFileInput.files[0];
 
   console.log("Form data:", {
     title,
-    date,
+    date: dateStr,
     content,
     published,
     coverFile: coverFile?.name,
@@ -122,7 +122,7 @@ saveBtn.addEventListener("click", async () => {
     showMessage("Please enter a title", true);
     return;
   }
-  if (!date) {
+  if (!dateStr) {
     showMessage("Please select a date", true);
     return;
   }
@@ -135,10 +135,13 @@ saveBtn.addEventListener("click", async () => {
   const slug = generateSlug(title);
   console.log("Generated slug:", slug);
 
-  // Convert date string to Firestore Timestamp at 00:00 local time
-  const dateObj = new Date(date + "T00:00:00");
-  const timestamp = Timestamp.fromDate(dateObj);
-  console.log("Timestamp created:", timestamp);
+  // Convert user-selected date to Firestore Timestamp at midnight local time
+  console.log("Chosen date input:", dateStr);
+  const [y, m, d] = dateStr.split("-").map(Number);
+  const jsDate = new Date(y, m - 1, d, 0, 0, 0);
+  console.log("Chosen timestamp ISO:", jsDate.toISOString());
+  const chosenTimestamp = Timestamp.fromDate(jsDate);
+  console.log("Firestore Timestamp created:", chosenTimestamp);
 
   saveBtn.disabled = true;
   saveBtn.textContent = "Saving...";
@@ -172,7 +175,7 @@ saveBtn.addEventListener("click", async () => {
       title,
       slug,
       content,
-      date: timestamp,
+      date: chosenTimestamp,
       published,
       coverImageUrl,
     };
