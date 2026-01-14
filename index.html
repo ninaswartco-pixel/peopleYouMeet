@@ -152,15 +152,51 @@
         </button>
       </div>
     </div>
-    <script>
-      // On page load, set hero-bg to custom image if available
-      document.addEventListener("DOMContentLoaded", function () {
-        var heroBg = document.querySelector(".hero-bg");
-        var customImg = localStorage.getItem("heroImage");
-        if (heroBg && customImg) {
-          heroBg.style.backgroundImage = "url(" + customImg + ")";
+    <script type="module">
+      // Load global settings from Firestore and apply to page
+      import { db } from "./js/firebase-init.js";
+      import {
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+      async function loadGlobalSettings() {
+        try {
+          const docRef = doc(db, "siteSettings", "global");
+          const snap = await getDoc(docRef);
+          if (snap.exists()) {
+            const data = snap.data();
+
+            // Update title if available
+            if (data.siteTitle) {
+              document.title =
+                data.siteTitle + " | " + (data.siteAuthor || "Carla Schultz");
+              const titleEl = document.querySelector("h1");
+              if (titleEl) titleEl.textContent = data.siteTitle;
+            }
+
+            // Update author if available
+            if (data.siteAuthor) {
+              const authorEl = document.querySelector(".secret-author");
+              if (authorEl) authorEl.textContent = "by " + data.siteAuthor;
+            }
+
+            // Update hero background if available
+            if (data.heroImageUrl) {
+              const heroBg = document.querySelector(".hero-bg");
+              if (heroBg) {
+                heroBg.style.backgroundImage = "url(" + data.heroImageUrl + ")";
+              }
+            }
+
+            console.log("Global settings loaded:", data);
+          }
+        } catch (e) {
+          console.error("Failed to load global settings:", e);
         }
-      });
+      }
+
+      loadGlobalSettings();
     </script>
     <!-- Login Modal HTML -->
     <div
