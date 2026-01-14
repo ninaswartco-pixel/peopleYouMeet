@@ -92,6 +92,7 @@
             Edit Stories
           </h2>
           <button
+            id="newNarrativeBtn"
             class="text-[10px] uppercase tracking-widest font-bold bg-[var(--theme-primary)] text-white px-6 py-2"
           >
             New Narrative
@@ -279,6 +280,142 @@
       </a>
     </footer>
     <!-- Removed floating eye and page circle icons -->
+
+    <!-- Create Post Modal -->
+    <div
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/20 backdrop-blur-sm"
+      id="createPostModal"
+    >
+      <div
+        class="bg-white w-full max-w-3xl rounded-lg shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto custom-scrollbar"
+      >
+        <div
+          class="sticky top-0 bg-white border-b border-slate-100 px-8 py-6 flex items-center justify-between"
+        >
+          <h2 class="text-3xl font-script text-[var(--theme-primary)]">
+            Create New Story
+          </h2>
+          <button
+            id="cancelPostBtn"
+            class="text-slate-400 hover:text-slate-800 transition-colors"
+          >
+            <span class="material-symbols-outlined text-2xl">close</span>
+          </button>
+        </div>
+
+        <div class="p-8 space-y-8">
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              for="postTitle"
+              >Story Title</label
+            >
+            <input
+              id="postTitle"
+              type="text"
+              placeholder="Enter a memorable title..."
+              class="w-full border-b border-slate-200 border-x-0 border-t-0 p-0 pb-2 text-2xl font-script text-[var(--theme-primary)] focus:border-[var(--theme-primary)] bg-transparent transition-colors"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              for="postDate"
+              >Date</label
+            >
+            <input
+              id="postDate"
+              type="date"
+              class="w-full border-b border-slate-200 border-x-0 border-t-0 p-0 pb-2 text-lg font-body focus:border-[var(--theme-primary)] bg-transparent transition-colors"
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              for="postCoverFile"
+              >Cover Image</label
+            >
+            <div class="space-y-4">
+              <div class="relative">
+                <input
+                  id="postCoverFile"
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                />
+                <label
+                  for="postCoverFile"
+                  class="block h-12 w-full border border-dashed border-slate-200 flex items-center justify-between px-4 hover:border-[var(--theme-primary)] transition-colors cursor-pointer group"
+                >
+                  <span
+                    class="text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-slate-900"
+                    >Choose Cover Image</span
+                  >
+                  <span class="material-symbols-outlined text-sm"
+                    >cloud_upload</span
+                  >
+                </label>
+              </div>
+              <div id="postCoverPreview" class="hidden">
+                <img
+                  class="w-full max-h-64 object-cover rounded-lg border border-slate-100"
+                  alt="Cover preview"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              for="postContent"
+              >Story Content</label
+            >
+            <textarea
+              id="postContent"
+              rows="10"
+              placeholder="Share the story of the person you met..."
+              class="w-full border border-slate-200 rounded p-4 text-lg font-serif focus:border-[var(--theme-primary)] focus:ring-0 bg-transparent transition-colors resize-y"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <input
+              id="postPublished"
+              type="checkbox"
+              checked
+              class="w-5 h-5 text-[var(--theme-primary)] border-slate-300 rounded focus:ring-[var(--theme-primary)]"
+            />
+            <label class="text-sm font-body text-slate-700" for="postPublished"
+              >Publish immediately</label
+            >
+          </div>
+
+          <div
+            id="postMessage"
+            class="hidden p-4 rounded text-sm font-body"
+          ></div>
+
+          <div class="flex gap-4 pt-4">
+            <button
+              id="savePostBtn"
+              class="flex-1 bg-[var(--theme-primary)] text-white py-4 text-[10px] uppercase tracking-[0.3em] font-bold hover:brightness-110 transition-all"
+            >
+              Save Story
+            </button>
+            <button
+              id="cancelPostBtn2"
+              class="px-8 py-4 text-[10px] uppercase tracking-[0.3em] font-bold text-slate-400 hover:text-slate-800 transition-colors border border-slate-200"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div
       class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10 backdrop-blur-sm"
       id="logout-modal"
@@ -320,6 +457,8 @@
         });
       }
     </script>
+    <script type="module" src="js/firebase-init.js"></script>
+    <script type="module" src="js/admin-create-post.js"></script>
     <script src="js/scripts.js"></script>
   </body>
 </html>

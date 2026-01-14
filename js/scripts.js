@@ -1,9 +1,9 @@
 // --- HERO IMAGE REPLACEMENT LOGIC ---
 // Allows admin to change the hero image on the homepage
 const setupHeroImageReplace = () => {
-  // Find the Replace Hero Image element
-  const replaceHeroBtn = document.querySelector(
-    'span:contains("Replace Hero Image")'
+  // Find the Replace Hero Image element by searching all spans
+  const replaceHeroBtn = Array.from(document.querySelectorAll("span")).find(
+    (span) => span.textContent.trim() === "Replace Hero Image"
   );
   if (!replaceHeroBtn) return;
 
