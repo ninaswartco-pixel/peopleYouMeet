@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Blog Entries List - Carla Schultz</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Playfair+Display+SC:wght@400;700&amp;family=Great+Vibes&amp;family=Montserrat:wght@300;400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            aspectRatio: {
+              "7/5": "7 / 5",
+            },
+            colors: {
+              "warm-cream": "#FDFBF7",
+              "warm-beige": "#F5F0E8",
+              "warm-brown": "#5C4033",
+              "dark-brown": "#3D2B1F",
+              "burnt-orange": "#BF5700",
+              "soft-terracotta": "#E2725B",
+            },
+            fontFamily: {
+              script: ["Great Vibes", "cursive"],
+              serif: ["Cormorant Garamond", "serif"],
+              display: ["Playfair Display SC", "serif"],
+              sans: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply bg-warm-cream text-warm-brown font-serif;
+        }
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen selection:bg-burnt-orange/20">
+    <header
+      class="sticky top-0 z-50 bg-warm-cream/90 backdrop-blur-md border-b border-warm-brown/10 px-6 py-4"
+    >
+      <div class="max-w-[1400px] mx-auto flex items-center justify-between">
+        <a
+          class="flex items-center gap-2 group text-warm-brown/70 hover:text-burnt-orange transition-colors"
+          href="index.html"
+        >
+          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+          <span class="font-sans text-xs uppercase tracking-widest font-medium"
+            >Home</span
+          >
+        </a>
+        <div class="flex items-center gap-6">
+          <div class="relative hidden sm:block">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-warm-brown/40 text-[20px]"
+              >search</span
+            >
+            <input
+              class="bg-warm-beige/50 border-warm-brown/10 rounded-full pl-10 pr-4 py-1.5 text-sm font-sans focus:ring-burnt-orange focus:border-burnt-orange w-64 placeholder:text-warm-brown/30"
+              placeholder="Search stories..."
+              type="text"
+            />
+          </div>
+          <div class="flex items-center gap-2">
+            <span
+              class="font-sans text-[10px] uppercase tracking-tighter text-warm-brown/50"
+              >Sort by</span
+            >
+            <select
+              class="bg-transparent border-none text-sm font-sans font-semibold text-warm-brown focus:ring-0 cursor-pointer hover:text-burnt-orange py-0"
+            >
+              <option>New Faces</option>
+              <option>Old Faces</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button
+            class="flex items-center justify-center w-10 h-10 rounded-full border border-warm-brown/10 hover:bg-warm-beige transition-colors"
+          >
+            <span class="material-symbols-outlined text-burnt-orange"
+              >edit_square</span
+            >
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="max-w-[1400px] mx-auto px-4 md:px-8 py-16">
+      <div class="text-center mb-20">
+        <h2 class="font-script text-6xl md:text-7xl text-dark-brown mb-4">
+          The person I met in...
+        </h2>
+        <div class="w-24 h-px bg-warm-brown/20 mx-auto"></div>
+      </div>
+      <div id="firebase-posts" class="flex flex-col gap-24 mb-24"></div>
+      <div class="flex flex-col gap-24">
+        <article class="w-full flex flex-col items-center">
+          <a class="w-full max-w-6xl group" href="#">
+            <div
+              class="bg-white/40 border border-warm-brown/5 rounded-2xl p-6 md:p-10 shadow-sm transition-all hover:shadow-md hover:bg-white/60"
+            >
+              <div class="text-center mb-10">
+                <h3 class="font-script text-5xl text-dark-brown mb-2">
+                  Florence
+                </h3>
+                <p
+                  class="font-sans text-[11px] uppercase tracking-[0.3em] text-burnt-orange font-semibold"
+                >
+                  September 14, 2023
+                </p>
+              </div>
+              <div class="relative mb-10 group/carousel max-w-4xl mx-auto">
+                <div
+                  class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory rounded-xl shadow-lg"
+                >
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Florence person"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaKZtivA-a7Url3QXge2KMB9UoyMhTjhQPlZY1ykHj-ogIf1NgUXQ2G-Ymq211B0x-6b1irOHUpATXOCuAELHlyQzpTb6aHf0Lz5Y7pVZNmd4bJjWUKohK5NIRPXNkyEMi_DpW_gcxZVjw3sJmKHCAVsilz2p_F-KZO3rVBnH1SVWXAswwo9k5jw_L1T8q4viisrchzRU1OGudxoEK-Bu9axh5nfiaOM31rpIJkokF6fdkWKvDK4IPNFT3P_u5mqjgorST5GO9E38"
+                    />
+                  </div>
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Florence street"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwdBdWpG37b5NJFy0-MUM8jaqWXFKhC-gLeLZQ942cLRSGJOrmNeBkExIn0Hn4SZNdB9Gwi6HnA924B8kS29E_puAk7_UaEiQNgKpnrEo02_BsD_OpYsI3cfPT9eaJyWes5MHEG-6gO8aCYJq7B4IK8nZxggLy14WDj368dfFhuTo4I8_JQGoST3L3gupxxE_wCoIwEQFYmccXtnSxuCCuZkWNc0Qu85hJL3OVa7jmnPGVnl4QAWtGfPgnKv1_VN9xmcjEOeAFskQ"
+                    />
+                  </div>
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Florence detail"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWEHQzEqBHUwQ6lSaqYxHBiS-0byLbw1uHeXcR5_j15EDpApzpTb_0CDgammwt5diyaYbDCkjdGzKF1ikxz7TdigFWqH2XlWJHOlbGutkVhL28UnGVY31F5yD1di3Bur3b8GdtejHV0zs52W86MQ9bwhG9WMritXgUd-fFb6zGM5EMiepC_9f02c9qRkOOVY5EwJ_BR90vGNNdR45JyakH3cLKUy4SdSpiv8HMm2phsHQKzlo1rfa7r7GQjV0KoAWaPSq38oIGOOM"
+                    />
+                  </div>
+                </div>
+                <div class="absolute inset-y-0 left-0 flex items-center">
+                  <button
+                    class="bg-white/80 rounded-full p-2 ml-4 shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined">chevron_left</span>
+                  </button>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                  <button
+                    class="bg-white/80 rounded-full p-2 mr-4 shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined">chevron_right</span>
+                  </button>
+                </div>
+                <div
+                  class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5"
+                >
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/60"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+                </div>
+              </div>
+              <div class="max-w-3xl mx-auto text-center">
+                <p
+                  class="text-xl leading-relaxed text-warm-brown/80 mb-6 italic"
+                >
+                  "He was sitting on the edge of the fountain, holding a small
+                  sketchbook that looked like it had survived a decade of
+                  travels. His eyes reflected the Tuscan sunset..."
+                </p>
+                <div class="flex justify-center">
+                  <span
+                    class="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest font-bold text-burnt-orange hover:text-soft-terracotta transition-colors"
+                  >
+                    Read More
+                    <span
+                      class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform"
+                      >arrow_forward</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="w-full flex flex-col items-center">
+          <a class="w-full max-w-6xl group" href="#">
+            <div
+              class="bg-white/40 border border-warm-brown/5 rounded-2xl p-6 md:p-10 shadow-sm transition-all hover:shadow-md hover:bg-white/60"
+            >
+              <div class="text-center mb-10">
+                <h3 class="font-script text-5xl text-dark-brown mb-2">Tokyo</h3>
+                <p
+                  class="font-sans text-[11px] uppercase tracking-[0.3em] text-burnt-orange font-semibold"
+                >
+                  August 02, 2023
+                </p>
+              </div>
+              <div class="relative mb-10 group/carousel max-w-4xl mx-auto">
+                <div
+                  class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory rounded-xl shadow-lg"
+                >
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Tokyo person"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwdBdWpG37b5NJFy0-MUM8jaqWXFKhC-gLeLZQ942cLRSGJOrmNeBkExIn0Hn4SZNdB9Gwi6HnA924B8kS29E_puAk7_UaEiQNgKpnrEo02_BsD_OpYsI3cfPT9eaJyWes5MHEG-6gO8aCYJq7B4IK8nZxggLy14WDj368dfFhuTo4I8_JQGoST3L3gupxxE_wCoIwEQFYmccXtnSxuCCuZkWNc0Qu85hJL3OVa7jmnPGVnl4QAWtGfPgnKv1_VN9xmcjEOeAFskQ"
+                    />
+                  </div>
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Tokyo neon"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWEHQzEqBHUwQ6lSaqYxHBiS-0byLbw1uHeXcR5_j15EDpApzpTb_0CDgammwt5diyaYbDCkjdGzKF1ikxz7TdigFWqH2XlWJHOlbGutkVhL28UnGVY31F5yD1di3Bur3b8GdtejHV0zs52W86MQ9bwhG9WMritXgUd-fFb6zGM5EMiepC_9f02c9qRkOOVY5EwJ_BR90vGNNdR45JyakH3cLKUy4SdSpiv8HMm2phsHQKzlo1rfa7r7GQjV0KoAWaPSq38oIGOOM"
+                    />
+                  </div>
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Tokyo evening"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaKZtivA-a7Url3QXge2KMB9UoyMhTjhQPlZY1ykHj-ogIf1NgUXQ2G-Ymq211B0x-6b1irOHUpATXOCuAELHlyQzpTb6aHf0Lz5Y7pVZNmd4bJjWUKohK5NIRPXNkyEMi_DpW_gcxZVjw3sJmKHCAVsilz2p_F-KZO3rVBnH1SVWXAswwo9k5jw_L1T8q4viisrchzRU1OGudxoEK-Bu9axh5nfiaOM31rpIJkokF6fdkWKvDK4IPNFT3P_u5mqjgorST5GO9E38"
+                    />
+                  </div>
+                </div>
+                <div class="absolute inset-y-0 left-0 flex items-center">
+                  <button
+                    class="bg-white/80 rounded-full p-2 ml-4 shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined">chevron_left</span>
+                  </button>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                  <button
+                    class="bg-white/80 rounded-full p-2 mr-4 shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined">chevron_right</span>
+                  </button>
+                </div>
+                <div
+                  class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5"
+                >
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/60"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+                </div>
+              </div>
+              <div class="max-w-3xl mx-auto text-center">
+                <p
+                  class="text-xl leading-relaxed text-warm-brown/80 mb-6 italic"
+                >
+                  "In the middle of the Shibuya crossing, she stood perfectly
+                  still. While the world rushed around her in a blur of neon and
+                  movement, she was focused on a single dragonfly..."
+                </p>
+                <div class="flex justify-center">
+                  <span
+                    class="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest font-bold text-burnt-orange hover:text-soft-terracotta transition-colors"
+                  >
+                    Read More
+                    <span
+                      class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform"
+                      >arrow_forward</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </article>
+        <article class="w-full flex flex-col items-center">
+          <a class="w-full max-w-6xl group" href="#">
+            <div
+              class="bg-white/40 border border-warm-brown/5 rounded-2xl p-6 md:p-10 shadow-sm transition-all hover:shadow-md hover:bg-white/60"
+            >
+              <div class="text-center mb-10">
+                <h3 class="font-script text-5xl text-dark-brown mb-2">
+                  Lisbon
+                </h3>
+                <p
+                  class="font-sans text-[11px] uppercase tracking-[0.3em] text-burnt-orange font-semibold"
+                >
+                  July 22, 2023
+                </p>
+              </div>
+              <div class="relative mb-10 group/carousel max-w-4xl mx-auto">
+                <div
+                  class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory rounded-xl shadow-lg"
+                >
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Lisbon morning"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWEHQzEqBHUwQ6lSaqYxHBiS-0byLbw1uHeXcR5_j15EDpApzpTb_0CDgammwt5diyaYbDCkjdGzKF1ikxz7TdigFWqH2XlWJHOlbGutkVhL28UnGVY31F5yD1di3Bur3b8GdtejHV0zs52W86MQ9bwhG9WMritXgUd-fFb6zGM5EMiepC_9f02c9qRkOOVY5EwJ_BR90vGNNdR45JyakH3cLKUy4SdSpiv8HMm2phsHQKzlo1rfa7r7GQjV0KoAWaPSq38oIGOOM"
+                    />
+                  </div>
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Lisbon portrait"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaKZtivA-a7Url3QXge2KMB9UoyMhTjhQPlZY1ykHj-ogIf1NgUXQ2G-Ymq211B0x-6b1irOHUpATXOCuAELHlyQzpTb6aHf0Lz5Y7pVZNmd4bJjWUKohK5NIRPXNkyEMi_DpW_gcxZVjw3sJmKHCAVsilz2p_F-KZO3rVBnH1SVWXAswwo9k5jw_L1T8q4viisrchzRU1OGudxoEK-Bu9axh5nfiaOM31rpIJkokF6fdkWKvDK4IPNFT3P_u5mqjgorST5GO9E38"
+                    />
+                  </div>
+                  <div
+                    class="min-w-full aspect-[7/5] overflow-hidden snap-center"
+                  >
+                    <img
+                      alt="Lisbon street"
+                      class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-700"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYBOkUuQYt5NrBmH34nuPIyNvTqNi7BxWY_qjLFg7z8jsfEmTgfbdlhlI4mkXa_wJSLnrRr9PPFnSX7MkNA37IdahLDVeqluLj2ad6_eKwgmkXhEETZXLTZsRE5q0YG7eqD4kAj57g0r_zn_oTPgoVw9J4uxIfkyWGka_tdOdk9kYEQjosphV3yxGO-Ca6qlcImn3lJwLihUd0E9H5MMliHoZG2XQtNLU9Ra-b9SKTcZaGS1W5HG8JGKAAAPDB-L7vxjn5rJBXgOU"
+                    />
+                  </div>
+                </div>
+                <div class="absolute inset-y-0 left-0 flex items-center">
+                  <button
+                    class="bg-white/80 rounded-full p-2 ml-4 shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined">chevron_left</span>
+                  </button>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center">
+                  <button
+                    class="bg-white/80 rounded-full p-2 mr-4 shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity"
+                    type="button"
+                  >
+                    <span class="material-symbols-outlined">chevron_right</span>
+                  </button>
+                </div>
+                <div
+                  class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5"
+                >
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/60"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+                  <div class="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+                </div>
+              </div>
+              <div class="max-w-3xl mx-auto text-center">
+                <p
+                  class="text-xl leading-relaxed text-warm-brown/80 mb-6 italic"
+                >
+                  "The smell of fresh pastéis de nata filled the air when the
+                  old baker invited me into his kitchen. He didn't speak a word
+                  of English, but his hands told stories of fifty years..."
+                </p>
+                <div class="flex justify-center">
+                  <span
+                    class="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest font-bold text-burnt-orange hover:text-soft-terracotta transition-colors"
+                  >
+                    Read More
+                    <span
+                      class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform"
+                      >arrow_forward</span
+                    >
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </article>
+      </div>
+    </main>
+    <footer
+      class="mt-40 border-t border-warm-brown/10 bg-warm-beige/30 py-16 px-6 text-center"
+    >
+      <div class="max-w-[1400px] mx-auto flex flex-col items-center gap-10">
+        <div>
+          <h4 class="font-script text-4xl text-burnt-orange mb-2">
+            Carla Schultz
+          </h4>
+          <p
+            class="font-sans text-[10px] uppercase tracking-[0.4em] text-burnt-orange"
+          >
+            Storyteller &amp; Photographer
+          </p>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+          <p
+            class="text-warm-brown/40 font-sans text-xs tracking-wider uppercase"
+          >
+            End of stories for now
+          </p>
+          <div
+            class="w-1 h-12 bg-gradient-to-b from-burnt-orange to-transparent"
+          ></div>
+        </div>
+      </div>
+    </footer>
+    <script type="module" src="js/firebase-init.js"></script>
+    <script type="module" src="js/entries-firebase.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>

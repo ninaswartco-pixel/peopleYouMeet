@@ -1,0 +1,148 @@
+/* 1. GLOBAL THEME VARIABLES */
+:root {
+  /* Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fdfaf7; /* Warm cream for cards */
+  --theme-accent: #cc5500; /* Burnt Orange */
+  --text-main: #3d2b1f; /* Dark Brown for headings */
+  --text-body: #555555; /* Simple grey for long text */
+  --text-white: #ffffff;
+  --overlay: rgba(0, 0, 0, 0.2);
+
+  /* Fonts */
+  --font-heading: "Playfair Display", serif; /* Signature Script/Serif style */
+  --font-body: "Inter", sans-serif; /* Simple Sans-serif */
+}
+
+/* 2. RESET & BASE STYLES */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-body);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* 3. TYPOGRAPHY */
+h1,
+h2,
+.script-font {
+  font-family: var(--font-heading);
+  color: var(--text-main);
+  font-weight: 400;
+}
+
+.theme-color {
+  color: var(--theme-accent);
+}
+.white-text {
+  color: var(--text-white);
+}
+
+/* 4. LAYOUT COMPONENTS */
+
+/* Full Viewport Hero (Home Page) */
+.hero {
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Story Card Template (7:5 Ratio) */
+.story-card {
+  background: var(--bg-secondary);
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.photo-container {
+  width: 100%;
+  aspect-ratio: 7 / 5;
+  overflow-x: auto;
+  display: flex;
+  scroll-snap-type: x mandatory;
+  background: #eee;
+  margin: 20px 0;
+}
+
+.photo-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/* 5. BUTTONS & LINKS */
+.btn-read {
+  text-transform: lowercase;
+  text-decoration: none;
+  border: 1px solid var(--text-white);
+  padding: 10px 30px;
+  color: var(--text-white);
+  transition: 0.3s;
+}
+
+.admin-link {
+  color: var(--theme-accent);
+  opacity: 0.6; /* Transparent look */
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.admin-link:hover {
+  /* No change on hover to keep it hidden as requested */
+  cursor: pointer;
+}
+
+/* 6. ADMIN DASHBOARD SPECIFICS */
+.admin-container {
+  padding: 60px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.big-btn {
+  display: block;
+  width: 100%;
+  padding: 40px;
+  background: var(--bg-secondary);
+  border: 1px solid #eee;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* 7. MODAL (Logout Confirmation) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-card {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  text-align: center;
+}

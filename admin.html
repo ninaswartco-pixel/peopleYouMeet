@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Behind the Scenes - Carla Schultz</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italiana&amp;family=Montserrat:wght@200;300;400;500&amp;family=Great+Vibes&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              accent: "#d1d5db",
+              "soft-grey": "#fcfcfc",
+              "burnt-orange": "#cc5500",
+            },
+            fontFamily: {
+              display: ["Italiana", "serif"],
+              script: ["Great Vibes", "cursive"],
+              body: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply font-body bg-white text-slate-800 antialiased;
+        }
+        h1,
+        h2,
+        h3 {
+          @apply font-display text-[var(--theme-primary)];
+        }
+      }
+      :root {
+        --theme-primary: #cc5500;
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        outline: none !important;
+        box-shadow: none !important;
+        border-color: var(--theme-primary) !important;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 10px;
+      }
+      #logout-modal:target {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col relative">
+    <main class="max-w-5xl mx-auto px-6 py-20 flex-grow w-full">
+      <header class="text-center mb-24">
+        <h1
+          class="text-6xl md:text-7xl font-script text-[var(--theme-primary)] mb-4"
+        >
+          Behind the Scenes
+        </h1>
+        <p
+          class="uppercase tracking-[0.3em] text-[10px] text-slate-400 font-medium"
+        >
+          Administrator Workspace
+        </p>
+      </header>
+      <section class="mb-32">
+        <div
+          class="flex items-center justify-between mb-12 border-b border-slate-100 pb-6"
+        >
+          <h2
+            class="text-3xl tracking-tight text-[var(--theme-primary)] uppercase font-display"
+          >
+            Edit Stories
+          </h2>
+          <button
+            class="text-[10px] uppercase tracking-widest font-bold bg-[var(--theme-primary)] text-white px-6 py-2"
+          >
+            New Narrative
+          </button>
+        </div>
+        <div class="space-y-4">
+          <a
+            class="group flex items-center justify-between p-6 border border-slate-50 hover:border-[var(--theme-primary)] transition-all bg-soft-grey"
+            href="#edit-story-1"
+          >
+            <div class="flex items-center gap-6">
+              <img
+                alt="Thumbnail"
+                class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTxBppxVANe5YAWTWlNcj_BtJ6B5NVmhb0y0kO8N7wG14oN-sEr60kR1Y4YCL6hqEsqO0GCrwPfEP8psBGKH8N1hYFtWUQBhD29y2CpZMe4miWDlCGcv22yzIK25L_XdOLvvtYpWdMximLvQDjk0rMgQ6GsOigyg4Jy9o1JeyKWIXYyeYT6sQFkY9ETBOs6OJkStu1bgPiPepM4HdjjUuxVYn2wvbc3YWLmAB4fMwfJ9C5JDd0f0b4YPrweWb3qroFVzvFfKfsebw"
+              />
+              <div>
+                <h3
+                  class="text-xl group-hover:text-[var(--theme-primary)] transition-colors"
+                >
+                  The Whispers of the Coast
+                </h3>
+                <p
+                  class="text-[10px] uppercase tracking-widest text-slate-400 mt-1"
+                >
+                  Published Oct 12, 2023
+                </p>
+              </div>
+            </div>
+            <span
+              class="material-symbols-outlined text-slate-300 group-hover:text-[var(--theme-primary)] transition-colors"
+              >edit</span
+            >
+          </a>
+          <a
+            class="group flex items-center justify-between p-6 border border-slate-50 hover:border-[var(--theme-primary)] transition-all bg-soft-grey"
+            href="#edit-story-2"
+          >
+            <div class="flex items-center gap-6">
+              <div
+                class="w-16 h-16 bg-slate-100 flex items-center justify-center"
+              >
+                <span class="material-symbols-outlined text-slate-300"
+                  >image</span
+                >
+              </div>
+              <div>
+                <h3
+                  class="text-xl group-hover:text-[var(--theme-primary)] transition-colors"
+                >
+                  Morning Light in the Atelier
+                </h3>
+                <p
+                  class="text-[10px] uppercase tracking-widest text-slate-400 mt-1"
+                >
+                  Published Sep 28, 2023
+                </p>
+              </div>
+            </div>
+            <span
+              class="material-symbols-outlined text-slate-300 group-hover:text-[var(--theme-primary)] transition-colors"
+              >edit</span
+            >
+          </a>
+          <a
+            class="group flex items-center justify-between p-6 border border-slate-50 hover:border-[var(--theme-primary)] transition-all bg-soft-grey"
+            href="#edit-story-3"
+          >
+            <div class="flex items-center gap-6">
+              <div
+                class="w-16 h-16 bg-slate-100 flex items-center justify-center"
+              >
+                <span class="material-symbols-outlined text-slate-300"
+                  >image</span
+                >
+              </div>
+              <div>
+                <h3
+                  class="text-xl group-hover:text-[var(--theme-primary)] transition-colors"
+                >
+                  Finding Silence Among the Pines
+                </h3>
+                <p
+                  class="text-[10px] uppercase tracking-widest text-slate-400 mt-1"
+                >
+                  Draft • Last Edited Aug 15, 2023
+                </p>
+              </div>
+            </div>
+            <span
+              class="material-symbols-outlined text-slate-300 group-hover:text-[var(--theme-primary)] transition-colors"
+              >edit</span
+            >
+          </a>
+        </div>
+      </section>
+      <section class="border-t border-slate-100 pt-20">
+        <h2
+          class="text-3xl tracking-tight mb-16 text-center text-[var(--theme-primary)] uppercase font-display"
+        >
+          Global Settings
+        </h2>
+        <div
+          class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12"
+        >
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              >Site Title</label
+            >
+            <input
+              class="w-full border-b border-slate-200 border-x-0 border-t-0 p-0 pb-2 text-lg font-display focus:border-[var(--theme-primary)] bg-transparent transition-colors"
+              type="text"
+              value="Carla Schultz"
+            />
+          </div>
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              >Theme Accent Color</label
+            >
+            <div class="flex items-center gap-4">
+              <div
+                class="size-8 rounded-full bg-[var(--theme-primary)] border border-slate-100"
+              ></div>
+              <input
+                class="flex-1 border-b border-slate-200 border-x-0 border-t-0 p-0 pb-2 text-sm font-mono focus:border-[var(--theme-primary)] bg-transparent transition-colors"
+                type="text"
+                value="#CC5500"
+              />
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              >Post Background Color</label
+            >
+            <div class="flex items-center gap-4">
+              <div
+                class="size-8 rounded-full bg-white border border-slate-200"
+              ></div>
+              <input
+                class="flex-1 border-b border-slate-200 border-x-0 border-t-0 p-0 pb-2 text-sm font-mono focus:border-[var(--theme-primary)] bg-transparent transition-colors"
+                type="text"
+                value="#FFFFFF"
+              />
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              >Hero Background Photo</label
+            >
+            <div class="relative mt-2">
+              <div
+                class="h-12 w-full border border-dashed border-slate-200 flex items-center justify-between px-4 hover:border-[var(--theme-primary)] transition-colors cursor-pointer group"
+              >
+                <span
+                  class="text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-slate-900"
+                  >Replace Hero Image</span
+                >
+                <span class="material-symbols-outlined text-sm"
+                  >cloud_upload</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="md:col-span-2 pt-8 flex justify-center">
+            <button
+              class="text-[10px] uppercase tracking-[0.3em] font-bold border border-[var(--theme-primary)] text-[var(--theme-primary)] px-12 py-4 hover:bg-[var(--theme-primary)] hover:text-white transition-all"
+            >
+              Apply Global Changes
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="mt-20 border-t border-slate-50 py-12 flex justify-center">
+      <a
+        class="flex items-center gap-2 text-[10px] uppercase tracking-[0.4em] text-slate-300 hover:text-[var(--theme-primary)] transition-colors"
+        href="#logout-modal"
+      >
+        <span class="material-symbols-outlined text-lg">logout</span>
+        Logout of Session
+      </a>
+    </footer>
+    <div class="fixed bottom-10 right-10 flex flex-col gap-4">
+      <a
+        class="size-12 rounded-full bg-white border border-slate-100 flex items-center justify-center shadow-sm hover:shadow-md transition-shadow group"
+        href="#"
+      >
+        <span
+          class="material-symbols-outlined text-slate-300 group-hover:text-[var(--theme-primary)] transition-colors"
+          >visibility</span
+        >
+      </a>
+      <button
+        class="size-12 rounded-full bg-[var(--theme-primary)] text-white flex items-center justify-center shadow-lg hover:brightness-90 transition-all"
+      >
+        <span class="material-symbols-outlined">save</span>
+      </button>
+    </div>
+    <div
+      class="hidden fixed inset-0 z-50 flex items-center justify-center p-6 bg-slate-900/10 backdrop-blur-sm"
+      id="logout-modal"
+    >
+      <div
+        class="bg-white w-full max-w-sm p-12 text-center shadow-2xl border border-slate-50"
+      >
+        <p class="text-slate-800 font-body text-sm tracking-wide mb-10">
+          Are you sure you want to log out?
+        </p>
+        <div class="flex flex-col gap-4">
+          <button
+            class="w-full bg-[var(--theme-primary)] text-white py-4 text-[10px] uppercase tracking-[0.3em] font-bold hover:brightness-110 transition-all"
+          >
+            Log Out
+          </button>
+          <a
+            class="w-full py-4 text-[10px] uppercase tracking-[0.3em] font-bold text-slate-400 hover:text-slate-800 transition-colors"
+            href="#"
+          >
+            Cancel
+          </a>
+        </div>
+      </div>
+    </div>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>

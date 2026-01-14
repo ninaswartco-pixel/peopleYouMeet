@@ -1,0 +1,102 @@
+// js/entries-firebase.js
+// Fetch and render published posts from Firestore
+import { db } from "./firebase-init.js";
+import {
+  collection,
+  query,
+  where,
+  orderBy,
+  getDocs,
+} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+const postsContainer = document.getElementById("firebase-posts");
+console.log("Firebase posts container found:", postsContainer);
+
+async function fetchPosts() {
+  try {
+    console.log("Starting to fetch posts from Firestore...");
+    const postsRef = collection(db, "posts");
+    console.log("Posts collection reference created");
+    const q = query(postsRef, where("published", "==", true));
+    console.log("Query created (without orderBy to avoid index requirement)");
+    const snapshot = await getDocs(q);
+    console.log("Fetched posts:", snapshot.size);
+
+    if (snapshot.empty) {
+      console.log("No published posts found");
+      postsContainer.innerHTML =
+        '<p class="text-center text-warm-brown/60 font-sans text-sm">No published posts yet.</p>';
+      return;
+    }
+
+    // Get all posts and sort them in JavaScript to avoid Firebase composite index
+    const posts = [];
+    snapshot.forEach((doc) => {
+      const post = doc.data();
+      post.id = doc.id;
+      posts.push(post);
+    });
+
+    // Sort posts by date in descending order
+    posts.sort((a, b) => {
+      const dateA = a.date && a.date.toDate ? a.date.toDate() : new Date(0);
+      const dateB = b.date && b.date.toDate ? b.date.toDate() : new Date(0);
+      return dateB - dateA;
+    });
+
+    let html = "";
+    posts.forEach((post) => {
+      console.log("Processing post:", post.id, post);
+      const title = post.title || "Untitled";
+      const date = post.date && post.date.toDate ? post.date.toDate() : null;
+      const dateStr = date
+        ? date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        : "";
+      const content = post.content || "";
+      const preview =
+        content.length > 160 ? content.slice(0, 157) + "..." : content;
+      const coverImageUrl = post.coverImageUrl;
+      const slug = post.slug || post.id;
+      html += `
+        <article class="w-full flex flex-col items-center">
+          <a class="w-full max-w-6xl group" href="story.html?slug=${slug}" data-slug="${slug}">
+            <div class="bg-white/40 border border-warm-brown/5 rounded-2xl p-6 md:p-10 shadow-sm transition-all hover:shadow-md hover:bg-white/60">
+              <div class="text-center mb-10">
+                <h3 class="font-script text-5xl text-dark-brown mb-2">${title}</h3>
+                <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-burnt-orange font-semibold">${dateStr}</p>
+              </div>
+              ${
+                coverImageUrl
+                  ? `<div class=\"mb-8\"><img alt=\"${title}\" class=\"w-full max-h-96 object-cover rounded-xl shadow\" src=\"${coverImageUrl}\" /></div>`
+                  : ""
+              }
+              <div class="max-w-3xl mx-auto text-center">
+                <p class="text-xl leading-relaxed text-warm-brown/80 mb-6 italic">${preview}</p>
+                <div class="flex justify-center">
+                  <span class="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest font-bold text-burnt-orange hover:text-soft-terracotta transition-colors">
+                    Read More
+                    <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+        </article>
+      `;
+    });
+    console.log("Generated HTML length:", html.length);
+    postsContainer.innerHTML = html;
+    console.log("Posts rendered successfully");
+  } catch (err) {
+    console.error("Error fetching posts:", err);
+    postsContainer.innerHTML =
+      '<p class="text-center text-red-600 font-sans text-sm">Error loading posts. Check console for details.</p>';
+  }
+}
+
+console.log("About to fetch posts...");
+fetchPosts();
