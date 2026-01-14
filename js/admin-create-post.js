@@ -1,11 +1,13 @@
 // js/admin-create-post.js
-// Handle creating new blog posts from admin panel
+// Handle creating and editing blog posts from admin panel
 
 import { db, storage } from "./firebase-init.js";
 import {
   addDoc,
   collection,
   Timestamp,
+  doc,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 import {
   ref,
@@ -30,8 +32,17 @@ const messageDiv = document.getElementById("postMessage");
 // Set default date to today
 dateInput.valueAsDate = new Date();
 
-// Open modal
+// Open modal for creating new post
 openBtn.addEventListener("click", () => {
+  // Reset to create mode
+  window.currentEditPostId = null;
+  window.currentEditCoverUrl = "";
+
+  // Reset modal text
+  const modalHeader = document.querySelector("#createPostModal h2");
+  modalHeader.textContent = "Create New Story";
+  saveBtn.textContent = "Save Story";
+
   modal.classList.remove("hidden");
 });
 
@@ -46,6 +57,14 @@ cancelBtn2.addEventListener("click", closeModal);
 
 // Reset form
 function resetForm() {
+  // Clear edit mode
+  window.currentEditPostId = null;
+  window.currentEditCoverUrl = "";
+
+  // Reset modal text
+  const modalHeader = document.querySelector("#createPostModal h2");
+  modalHeader.textContent = "Create New Story";
+  saveBtn.textContent = "Save Story";
   titleInput.value = "";
   dateInput.valueAsDate = new Date();
   contentInput.value = "";
@@ -94,14 +113,15 @@ coverFileInput.addEventListener("change", (e) => {
       coverPreview.classList.remove("hidden");
     };
     reader.readAsDataURL(file);
-  } else {
-    coverPreview.classList.add("hidden");
   }
 });
 
-// Save post
+// Save button (create or update)
 saveBtn.addEventListener("click", async () => {
   console.log("Save button clicked");
+
+  const isEditMode = !!window.currentEditPostId;
+  console.log("Mode:", isEditMode ? "EDIT" : "CREATE");
 
   const title = titleInput.value.trim();
   const dateStr = dateInput.value;
@@ -115,6 +135,8 @@ saveBtn.addEventListener("click", async () => {
     content,
     published,
     coverFile: coverFile?.name,
+    editMode: isEditMode,
+    editPostId: window.currentEditPostId,
   });
 
   // Validate
@@ -147,9 +169,9 @@ saveBtn.addEventListener("click", async () => {
   saveBtn.textContent = "Saving...";
 
   try {
-    let coverImageUrl = "";
+    let coverImageUrl = window.currentEditCoverUrl || "";
 
-    // Upload cover image if selected
+    // Upload cover image if new file selected
     if (coverFile) {
       console.log("Uploading cover image...");
       try {
@@ -170,7 +192,7 @@ saveBtn.addEventListener("click", async () => {
       }
     }
 
-    // Create post document
+    // Prepare post data
     const postData = {
       title,
       slug,
@@ -180,31 +202,51 @@ saveBtn.addEventListener("click", async () => {
       coverImageUrl,
     };
 
-    console.log("Creating post document with data:", postData);
-
-    const docRef = await addDoc(collection(db, "posts"), postData);
-    console.log("Post created successfully with ID:", docRef.id);
-
-    showMessage("Saved! Post created successfully.");
+    if (isEditMode) {
+      // UPDATE existing post
+      console.log("Updating post with ID:", window.currentEditPostId);
+      const docRef = doc(db, "posts", window.currentEditPostId);
+      await updateDoc(docRef, postData);
+      console.log("Post updated successfully");
+      showMessage("Saved! Post updated successfully.");
+    } else {
+      // CREATE new post
+      console.log("Creating new post document with data:", postData);
+      const docRef = await addDoc(collection(db, "posts"), postData);
+      console.log("Post created successfully with ID:", docRef.id);
+      showMessage("Saved! Post created successfully.");
+    }
 
     // Reset button state immediately before closing
     saveBtn.disabled = false;
-    saveBtn.textContent = "Save Story";
+    saveBtn.textContent = isEditMode ? "Save Changes" : "Save Story";
 
-    setTimeout(() => {
+    setTimeout(async () => {
       closeModal();
+      // Reload stories list if admin-stories.js is loaded
+      if (typeof window.loadStoriesList === "function") {
+        try {
+          await window.loadStoriesList();
+        } catch (reloadErr) {
+          console.error("Error reloading stories list:", reloadErr);
+        }
+      }
     }, 1500);
   } catch (error) {
-    console.error("Error creating post:", error);
-    console.error("Error details:", {
-      code: error.code,
-      message: error.message,
-      stack: error.stack,
-    });
-    showMessage("Error saving post: " + error.message, true);
-
+    console.error("Error saving post:", error);
+    if (error && typeof error === "object") {
+      console.error("Error details:", {
+        code: error.code,
+        message: error.message,
+        stack: error.stack,
+      });
+    }
+    showMessage(
+      "Error saving post: " + (error && error.message ? error.message : error),
+      true
+    );
     // Ensure button is reset on error
     saveBtn.disabled = false;
-    saveBtn.textContent = "Save Story";
+    saveBtn.textContent = isEditMode ? "Save Changes" : "Save Story";
   }
 });

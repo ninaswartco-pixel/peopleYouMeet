@@ -98,96 +98,7 @@
             New Narrative
           </button>
         </div>
-        <div class="space-y-4">
-          <a
-            class="group flex items-center justify-between p-6 border border-slate-50 hover:border-[var(--theme-primary)] transition-all bg-soft-grey"
-            href="#edit-story-1"
-          >
-            <div class="flex items-center gap-6">
-              <img
-                alt="Thumbnail"
-                class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTxBppxVANe5YAWTWlNcj_BtJ6B5NVmhb0y0kO8N7wG14oN-sEr60kR1Y4YCL6hqEsqO0GCrwPfEP8psBGKH8N1hYFtWUQBhD29y2CpZMe4miWDlCGcv22yzIK25L_XdOLvvtYpWdMximLvQDjk0rMgQ6GsOigyg4Jy9o1JeyKWIXYyeYT6sQFkY9ETBOs6OJkStu1bgPiPepM4HdjjUuxVYn2wvbc3YWLmAB4fMwfJ9C5JDd0f0b4YPrweWb3qroFVzvFfKfsebw"
-              />
-              <div>
-                <h3
-                  class="text-xl group-hover:text-[var(--theme-primary)] transition-colors"
-                >
-                  The Whispers of the Coast
-                </h3>
-                <p
-                  class="text-[10px] uppercase tracking-widest text-slate-400 mt-1"
-                >
-                  Published Oct 12, 2023
-                </p>
-              </div>
-            </div>
-            <span
-              class="material-symbols-outlined text-slate-300 group-hover:text-[var(--theme-primary)] transition-colors"
-              >edit</span
-            >
-          </a>
-          <a
-            class="group flex items-center justify-between p-6 border border-slate-50 hover:border-[var(--theme-primary)] transition-all bg-soft-grey"
-            href="#edit-story-2"
-          >
-            <div class="flex items-center gap-6">
-              <div
-                class="w-16 h-16 bg-slate-100 flex items-center justify-center"
-              >
-                <span class="material-symbols-outlined text-slate-300"
-                  >image</span
-                >
-              </div>
-              <div>
-                <h3
-                  class="text-xl group-hover:text-[var(--theme-primary)] transition-colors"
-                >
-                  Morning Light in the Atelier
-                </h3>
-                <p
-                  class="text-[10px] uppercase tracking-widest text-slate-400 mt-1"
-                >
-                  Published Sep 28, 2023
-                </p>
-              </div>
-            </div>
-            <span
-              class="material-symbols-outlined text-slate-300 group-hover:text-[var(--theme-primary)] transition-colors"
-              >edit</span
-            >
-          </a>
-          <a
-            class="group flex items-center justify-between p-6 border border-slate-50 hover:border-[var(--theme-primary)] transition-all bg-soft-grey"
-            href="#edit-story-3"
-          >
-            <div class="flex items-center gap-6">
-              <div
-                class="w-16 h-16 bg-slate-100 flex items-center justify-center"
-              >
-                <span class="material-symbols-outlined text-slate-300"
-                  >image</span
-                >
-              </div>
-              <div>
-                <h3
-                  class="text-xl group-hover:text-[var(--theme-primary)] transition-colors"
-                >
-                  Finding Silence Among the Pines
-                </h3>
-                <p
-                  class="text-[10px] uppercase tracking-widest text-slate-400 mt-1"
-                >
-                  Draft • Last Edited Aug 15, 2023
-                </p>
-              </div>
-            </div>
-            <span
-              class="material-symbols-outlined text-slate-300 group-hover:text-[var(--theme-primary)] transition-colors"
-              >edit</span
-            >
-          </a>
-        </div>
+        <div id="storiesList" class="space-y-4"></div>
       </section>
       <section class="border-t border-slate-100 pt-20">
         <h2
@@ -459,6 +370,7 @@
     </script>
     <script type="module" src="js/firebase-init.js"></script>
     <script type="module" src="js/admin-create-post.js"></script>
+    <script type="module" src="js/admin-stories.js"></script>
     <script src="js/scripts.js"></script>
   </body>
 </html>
