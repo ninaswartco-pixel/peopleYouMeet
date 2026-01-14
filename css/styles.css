@@ -79,12 +79,15 @@ h2,
   margin: 20px 0;
 }
 
-.photo-container img {
+.aspect-7\/5 {
+  aspect-ratio: 7 / 5;
+}
+
+.entry-img-7-5 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  flex-shrink: 0;
-  scroll-snap-align: start;
+  display: block;
 }
 
 /* 5. BUTTONS & LINKS */

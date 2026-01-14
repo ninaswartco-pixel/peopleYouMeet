@@ -95,19 +95,19 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
     const slug = post.slug || post.id;
     html += `
       <article class="w-full flex flex-col items-center">
-        <a class="w-full max-w-6xl group" href="story.html?slug=${slug}" data-slug="${slug}">
-          <div class="bg-white/40 border border-warm-brown/5 rounded-2xl p-6 md:p-10 shadow-sm transition-all hover:shadow-md hover:bg-white/60">
-            <div class="text-center mb-10">
-              <h3 class="font-script text-5xl text-dark-brown mb-2">${title}</h3>
-              <p class="font-sans text-[11px] uppercase tracking-[0.3em] text-burnt-orange font-semibold">${dateStr}</p>
+        <a class="w-full max-w-3xl group" href="story.html?slug=${slug}" data-slug="${slug}">
+          <div class="bg-white/40 border border-warm-brown/5 rounded-2xl p-4 md:p-6 shadow-sm transition-all hover:shadow-md hover:bg-white/60">
+            <div class="text-center mb-8">
+              <h3 class="font-script text-4xl text-dark-brown mb-2">${title}</h3>
+              <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-burnt-orange font-semibold">${dateStr}</p>
             </div>
             ${
               coverImageUrl
-                ? `<div class="mb-8"><img alt="${title}" class="w-full max-h-96 object-cover rounded-xl shadow" src="${coverImageUrl}" /></div>`
+                ? `<div class="mb-6 aspect-[7/5] overflow-hidden rounded-xl shadow"><img alt="${title}" class="w-full h-full object-cover" src="${coverImageUrl}" /></div>`
                 : ""
             }
-            <div class="max-w-3xl mx-auto text-center">
-              <p class="text-xl leading-relaxed text-warm-brown/80 mb-6 italic">${preview}</p>
+            <div class="max-w-2xl mx-auto text-center">
+              <p class="text-lg leading-relaxed text-warm-brown/80 mb-4 italic">${preview}</p>
               <div class="flex justify-center">
                 <span class="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest font-bold text-burnt-orange hover:text-soft-terracotta transition-colors">
                   Read More
