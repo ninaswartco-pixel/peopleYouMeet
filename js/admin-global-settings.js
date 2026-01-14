@@ -23,6 +23,26 @@ document.querySelectorAll(".color-swatch").forEach((swatch) => {
     themeColorInput.value = color;
     // Update preview
     document.documentElement.style.setProperty("--theme-primary", color);
+
+    // Remove selection from all theme color swatches
+    document.querySelectorAll(".color-swatch").forEach((s) => {
+      s.classList.remove(
+        "border-slate-800",
+        "ring-2",
+        "ring-slate-800",
+        "ring-offset-2"
+      );
+      s.classList.add("border-slate-200");
+    });
+
+    // Add selection to clicked swatch
+    swatch.classList.remove("border-slate-200");
+    swatch.classList.add(
+      "border-slate-800",
+      "ring-2",
+      "ring-slate-800",
+      "ring-offset-2"
+    );
   });
 });
 
@@ -30,6 +50,26 @@ document.querySelectorAll(".bg-color-swatch").forEach((swatch) => {
   swatch.addEventListener("click", () => {
     const color = swatch.dataset.bgColor;
     postBgColorInput.value = color;
+
+    // Remove selection from all background color swatches
+    document.querySelectorAll(".bg-color-swatch").forEach((s) => {
+      s.classList.remove(
+        "border-slate-800",
+        "ring-2",
+        "ring-slate-800",
+        "ring-offset-2"
+      );
+      s.classList.add("border-slate-200");
+    });
+
+    // Add selection to clicked swatch
+    swatch.classList.remove("border-slate-200");
+    swatch.classList.add(
+      "border-slate-800",
+      "ring-2",
+      "ring-slate-800",
+      "ring-offset-2"
+    );
   });
 });
 
@@ -53,6 +93,34 @@ async function loadGlobalSettings() {
           "--theme-primary",
           data.themeColor
         );
+
+        // Highlight the selected theme color swatch
+        document.querySelectorAll(".color-swatch").forEach((swatch) => {
+          if (swatch.dataset.color === data.themeColor.toUpperCase()) {
+            swatch.classList.remove("border-slate-200");
+            swatch.classList.add(
+              "border-slate-800",
+              "ring-2",
+              "ring-slate-800",
+              "ring-offset-2"
+            );
+          }
+        });
+      }
+
+      // Highlight the selected background color swatch
+      if (data.postBgColor) {
+        document.querySelectorAll(".bg-color-swatch").forEach((swatch) => {
+          if (swatch.dataset.bgColor === data.postBgColor.toUpperCase()) {
+            swatch.classList.remove("border-slate-200");
+            swatch.classList.add(
+              "border-slate-800",
+              "ring-2",
+              "ring-slate-800",
+              "ring-offset-2"
+            );
+          }
+        });
       }
       console.log("Loaded fonts:", {
         titleFont: data.titleFont,

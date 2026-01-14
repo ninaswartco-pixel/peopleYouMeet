@@ -60,13 +60,6 @@
       class="sticky top-0 z-50 bg-warm-cream/90 backdrop-blur-md border-b border-warm-brown/10 px-6 py-4"
     >
       <div class="max-w-[1400px] mx-auto">
-        <h1
-          id="siteTitle"
-          class="font-script text-5xl text-center mb-4"
-          style="color: var(--burnt-orange, #bf5700)"
-        >
-          The People You Meet
-        </h1>
         <div class="flex items-center justify-between">
           <a
             class="flex items-center gap-2 group text-warm-brown/70 hover:text-burnt-orange transition-colors"
@@ -111,6 +104,13 @@
       </div>
     </header>
     <main class="max-w-[1400px] mx-auto px-4 md:px-8 py-16">
+      <h1
+        id="siteTitle"
+        class="font-script text-6xl md:text-7xl text-center mb-16"
+        style="color: var(--burnt-orange, #bf5700)"
+      >
+        The Person I met in ...
+      </h1>
       <div id="firebase-posts" class="flex flex-col gap-24 mb-24"></div>
     </main>
     <footer
@@ -118,11 +118,16 @@
     >
       <div class="max-w-[1400px] mx-auto flex flex-col items-center gap-10">
         <div>
-          <h4 class="font-script text-4xl text-burnt-orange mb-2">
+          <h4
+            id="footerAuthor"
+            class="font-script text-4xl mb-2"
+            style="color: var(--burnt-orange, #bf5700)"
+          >
             Carla Schultz
           </h4>
           <p
-            class="font-sans text-[10px] uppercase tracking-[0.4em] text-burnt-orange"
+            class="font-sans text-[10px] uppercase tracking-[0.4em]"
+            style="color: var(--burnt-orange, #bf5700)"
           >
             Storyteller &amp; Photographer
           </p>
@@ -157,8 +162,12 @@
             const settings = settingsDoc.data();
             if (settings.themeColor) {
               const title = document.getElementById("siteTitle");
+              const footerAuthor = document.getElementById("footerAuthor");
               if (title) {
                 title.style.color = settings.themeColor;
+              }
+              if (footerAuthor) {
+                footerAuthor.style.color = settings.themeColor;
               }
               // Also update CSS custom property
               document.documentElement.style.setProperty(
@@ -172,6 +181,12 @@
                 title.textContent = settings.siteTitle;
               }
             }
+            if (settings.siteAuthor) {
+              const footerAuthor = document.getElementById("footerAuthor");
+              if (footerAuthor) {
+                footerAuthor.textContent = settings.siteAuthor;
+              }
+            }
 
             // Load and apply fonts
             const fontMap = {
@@ -180,6 +195,11 @@
               playfair: '"Playfair Display", serif',
               cormorant: '"Cormorant Garamond", serif',
               montserrat: '"Montserrat", sans-serif',
+              crimsonText: '"Crimson Text", serif',
+              lora: '"Lora", serif',
+              merriweather: '"Merriweather", serif',
+              oldStandard: '"Old Standard TT", serif',
+              libreBaskerville: '"Libre Baskerville", serif',
             };
 
             if (settings.titleFont) {
@@ -192,6 +212,19 @@
               const title = document.getElementById("siteTitle");
               if (title) {
                 title.style.fontFamily = titleFontFamily;
+              }
+            }
+
+            if (settings.authorFont) {
+              const authorFontFamily =
+                fontMap[settings.authorFont] || fontMap.italiana;
+              document.documentElement.style.setProperty(
+                "--author-font",
+                authorFontFamily
+              );
+              const footerAuthor = document.getElementById("footerAuthor");
+              if (footerAuthor) {
+                footerAuthor.style.fontFamily = authorFontFamily;
               }
             }
 
