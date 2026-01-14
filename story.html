@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Story Detail - Carla Schultz</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Playfair+Display+SC:wght@400;700&amp;family=Great+Vibes&amp;family=Montserrat:wght@300;400;500&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            aspectRatio: {
+              "7/5": "7 / 5",
+            },
+            colors: {
+              "warm-cream": "#FDFBF7",
+              "warm-beige": "#F5F0E8",
+              "warm-brown": "#5C4033",
+              "dark-brown": "#3D2B1F",
+              "burnt-orange": "#BF5700",
+              "soft-terracotta": "#E2725B",
+            },
+            fontFamily: {
+              script: ["Great Vibes", "cursive"],
+              serif: ["Cormorant Garamond", "serif"],
+              display: ["Playfair Display SC", "serif"],
+              sans: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply bg-warm-cream text-warm-brown font-serif;
+        }
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen selection:bg-burnt-orange/20">
+    <header
+      class="sticky top-0 z-50 bg-warm-cream/90 backdrop-blur-md border-b border-warm-brown/10 px-6 py-4"
+    >
+      <div class="max-w-[1400px] mx-auto flex items-center justify-between">
+        <a
+          class="flex items-center gap-2 group text-warm-brown/70 hover:text-burnt-orange transition-colors"
+          href="entries.html"
+        >
+          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+          <span class="font-sans text-xs uppercase tracking-widest font-medium"
+            >Back to Entries</span
+          >
+        </a>
+      </div>
+    </header>
+    <main class="max-w-[1400px] mx-auto px-4 md:px-8 py-16">
+      <div id="storyContainer">
+        <article class="w-full flex flex-col items-center">
+          <div class="w-full max-w-6xl">
+            <div
+              class="bg-white/40 border border-warm-brown/5 rounded-2xl p-8 md:p-12 shadow-sm"
+            >
+              <div class="text-center mb-10">
+                <h1
+                  id="storyTitle"
+                  class="font-script text-6xl text-dark-brown mb-2"
+                >
+                  Loading...
+                </h1>
+                <p
+                  id="storyDate"
+                  class="font-sans text-[11px] uppercase tracking-[0.3em] text-burnt-orange font-semibold"
+                >
+                  Loading...
+                </p>
+              </div>
+              <div id="imageCarousel" class="relative mb-10 max-w-4xl mx-auto">
+                <!-- Images will be dynamically added here -->
+              </div>
+              <div id="storyContent" class="max-w-3xl mx-auto text-center">
+                <p class="text-xl leading-relaxed text-warm-brown/80">
+                  Loading...
+                </p>
+              </div>
+
+              <!-- Navigation -->
+              <div class="mt-12 pt-8 border-t border-warm-brown/10">
+                <div class="flex flex-col md:flex-row justify-between gap-6">
+                  <div id="prevStoryContainer" class="flex-1">
+                    <a
+                      id="prevStory"
+                      href="#"
+                      class="block p-4 hover:bg-warm-beige/30 rounded-lg transition-all group"
+                    >
+                      <div class="flex items-center gap-2 mb-1">
+                        <span
+                          class="material-symbols-outlined text-burnt-orange text-[18px]"
+                          >arrow_back</span
+                        >
+                        <span
+                          class="font-sans text-[10px] uppercase tracking-widest text-warm-brown/60"
+                        >
+                          Previous Story
+                        </span>
+                      </div>
+                      <h3
+                        id="prevStoryTitle"
+                        class="font-script text-2xl text-dark-brown group-hover:text-burnt-orange transition-colors"
+                      >
+                        Previous
+                      </h3>
+                    </a>
+                  </div>
+                  <div id="nextStoryContainer" class="flex-1">
+                    <a
+                      id="nextStory"
+                      href="#"
+                      class="block p-4 hover:bg-warm-beige/30 rounded-lg transition-all group text-right"
+                    >
+                      <div class="flex items-center justify-end gap-2 mb-1">
+                        <span
+                          class="font-sans text-[10px] uppercase tracking-widest text-warm-brown/60"
+                        >
+                          Next Story
+                        </span>
+                        <span
+                          class="material-symbols-outlined text-burnt-orange text-[18px]"
+                          >arrow_forward</span
+                        >
+                      </div>
+                      <h3
+                        id="nextStoryTitle"
+                        class="font-script text-2xl text-dark-brown group-hover:text-burnt-orange transition-colors"
+                      >
+                        Next
+                      </h3>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div id="notFoundMessage" class="hidden text-center">
+        <div
+          class="bg-white/40 border border-warm-brown/5 rounded-2xl p-12 max-w-2xl mx-auto"
+        >
+          <h2 class="font-script text-5xl text-dark-brown mb-4">
+            Story Not Found
+          </h2>
+          <p class="text-warm-brown/70 mb-6">
+            The story you're looking for doesn't exist or has been removed.
+          </p>
+          <a
+            href="entries.html"
+            class="inline-flex items-center gap-2 font-sans text-sm uppercase tracking-widest font-semibold text-burnt-orange hover:text-soft-terracotta transition-colors"
+          >
+            <span class="material-symbols-outlined text-[18px]"
+              >arrow_back</span
+            >
+            Back to Entries
+          </a>
+        </div>
+      </div>
+    </main>
+    <script type="module" src="js/firebase-init.js"></script>
+    <script type="module" src="js/story.js"></script>
+  </body>
+</html>
