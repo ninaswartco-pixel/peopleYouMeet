@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="css/styles.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Italiana&amp;family=Montserrat:wght@200;300;400;500&amp;family=Great+Vibes&amp;family=Playfair+Display:wght@400;700&amp;family=Cormorant+Garamond:wght@400;600&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Italiana&amp;family=Montserrat:wght@200;300;400;500&amp;family=Great+Vibes&amp;family=Playfair+Display:wght@400;700&amp;family=Cormorant+Garamond:wght@400;600&amp;family=Crimson+Text:wght@400;600&amp;family=Lora:wght@400;500;600&amp;family=Merriweather:wght@300;400;700&amp;family=Old+Standard+TT:wght@400;700&amp;family=Libre+Baskerville:wght@400;700&amp;display=swap"
       rel="stylesheet"
     />
     <link
@@ -107,9 +107,9 @@
           Global Settings
         </h2>
         <div
-          class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12"
+          class="max-w-2xl mx-auto space-y-8"
         >
-          <div class="space-y-2 md:col-span-2">
+          <div class="space-y-2">
             <label
               class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
               >Site Title</label
@@ -121,7 +121,7 @@
               value="The People We Meet"
             />
           </div>
-          <div class="space-y-2 md:col-span-2">
+          <div class="space-y-2">
             <label
               class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
               >Author</label
@@ -169,6 +169,33 @@
               >
                 Montserrat
               </option>
+              <option
+                value="crimsonText"
+                style="font-family: 'Crimson Text', serif"
+              >
+                Crimson Text
+              </option>
+              <option value="lora" style="font-family: 'Lora', serif">
+                Lora
+              </option>
+              <option
+                value="merriweather"
+                style="font-family: 'Merriweather', serif"
+              >
+                Merriweather
+              </option>
+              <option
+                value="oldStandard"
+                style="font-family: 'Old Standard TT', serif"
+              >
+                Old Standard TT
+              </option>
+              <option
+                value="libreBaskerville"
+                style="font-family: 'Libre Baskerville', serif"
+              >
+                Libre Baskerville
+              </option>
             </select>
           </div>
           <div class="space-y-2">
@@ -206,6 +233,33 @@
                 style="font-family: 'Montserrat', sans-serif"
               >
                 Montserrat
+              </option>
+              <option
+                value="crimsonText"
+                style="font-family: 'Crimson Text', serif"
+              >
+                Crimson Text
+              </option>
+              <option value="lora" style="font-family: 'Lora', serif">
+                Lora
+              </option>
+              <option
+                value="merriweather"
+                style="font-family: 'Merriweather', serif"
+              >
+                Merriweather
+              </option>
+              <option
+                value="oldStandard"
+                style="font-family: 'Old Standard TT', serif"
+              >
+                Old Standard TT
+              </option>
+              <option
+                value="libreBaskerville"
+                style="font-family: 'Libre Baskerville', serif"
+              >
+                Libre Baskerville
               </option>
             </select>
           </div>
@@ -245,6 +299,33 @@
               >
                 Montserrat
               </option>
+              <option
+                value="crimsonText"
+                style="font-family: 'Crimson Text', serif"
+              >
+                Crimson Text
+              </option>
+              <option value="lora" style="font-family: 'Lora', serif">
+                Lora
+              </option>
+              <option
+                value="merriweather"
+                style="font-family: 'Merriweather', serif"
+              >
+                Merriweather
+              </option>
+              <option
+                value="oldStandard"
+                style="font-family: 'Old Standard TT', serif"
+              >
+                Old Standard TT
+              </option>
+              <option
+                value="libreBaskerville"
+                style="font-family: 'Libre Baskerville', serif"
+              >
+                Libre Baskerville
+              </option>
             </select>
           </div>
           <div class="space-y-2">
@@ -253,153 +334,27 @@
               >Theme Accent Color</label
             >
             <div class="grid grid-cols-8 gap-2 mb-3">
-              <button
-                type="button"
-                data-color="#CC5500"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #cc5500"
-                title="Burnt Orange"
-              ></button>
-              <button
-                type="button"
-                data-color="#D2691E"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #d2691e"
-                title="Chocolate"
-              ></button>
-              <button
-                type="button"
-                data-color="#CD853F"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #cd853f"
-                title="Peru"
-              ></button>
-              <button
-                type="button"
-                data-color="#A0522D"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #a0522d"
-                title="Sienna"
-              ></button>
-              <button
-                type="button"
-                data-color="#8B4513"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #8b4513"
-                title="Saddle Brown"
-              ></button>
-              <button
-                type="button"
-                data-color="#78350F"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #78350f"
-                title="Dark Brown"
-              ></button>
-              <button
-                type="button"
-                data-color="#DC2626"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #dc2626"
-                title="Red"
-              ></button>
-              <button
-                type="button"
-                data-color="#B91C1C"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #b91c1c"
-                title="Dark Red"
-              ></button>
-              <button
-                type="button"
-                data-color="#FF7F50"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #ff7f50"
-                title="Coral"
-              ></button>
-              <button
-                type="button"
-                data-color="#FF6347"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #ff6347"
-                title="Tomato"
-              ></button>
-              <button
-                type="button"
-                data-color="#E2725B"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #e2725b"
-                title="Terracotta"
-              ></button>
-              <button
-                type="button"
-                data-color="#DB2777"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #db2777"
-                title="Deep Pink"
-              ></button>
-              <button
-                type="button"
-                data-color="#EC4899"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #ec4899"
-                title="Pink"
-              ></button>
-              <button
-                type="button"
-                data-color="#F472B6"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #f472b6"
-                title="Light Pink"
-              ></button>
-              <button
-                type="button"
-                data-color="#E11D48"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #e11d48"
-                title="Rose"
-              ></button>
-              <button
-                type="button"
-                data-color="#BE123C"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #be123c"
-                title="Dark Rose"
-              ></button>
-              <button
-                type="button"
-                data-color="#9F1239"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #9f1239"
-                title="Burgundy"
-              ></button>
-              <button
-                type="button"
-                data-color="#881337"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #881337"
-                title="Wine"
-              ></button>
-              <button
-                type="button"
-                data-color="#EA580C"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #ea580c"
-                title="Orange"
-              ></button>
-              <button
-                type="button"
-                data-color="#C2410C"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #c2410c"
-                title="Dark Orange"
-              ></button>
-              <button
-                type="button"
-                data-color="#F97316"
-                class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
-                style="background-color: #f97316"
-                title="Bright Orange"
-              ></button>
+              <button type="button" data-color="#8B4513" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #8B4513" title="Saddle Brown"></button>
+              <button type="button" data-color="#A0522D" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #A0522D" title="Sienna"></button>
+              <button type="button" data-color="#CD853F" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #CD853F" title="Peru"></button>
+              <button type="button" data-color="#D2B48C" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #D2B48C" title="Tan"></button>
+              <button type="button" data-color="#DEB887" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #DEB887" title="Burlywood"></button>
+              <button type="button" data-color="#F4A460" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #F4A460" title="Sandy Brown"></button>
+              <button type="button" data-color="#D2691E" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #D2691E" title="Chocolate"></button>
+              <button type="button" data-color="#B87333" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #B87333" title="Dark Goldenrod"></button>
+              <button type="button" data-color="#BC8F8F" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #BC8F8F" title="Rosy Brown"></button>
+              <button type="button" data-color="#CD5C5C" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #CD5C5C" title="Indian Red"></button>
+              <button type="button" data-color="#A0522D" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #A0522D" title="Sienna"></button>
+              <button type="button" data-color="#8FBC8F" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #8FBC8F" title="Dark Sea Green"></button>
+              <button type="button" data-color="#9ACD32" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #9ACD32" title="Yellow Green"></button>
+              <button type="button" data-color="#808000" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #808000" title="Olive"></button>
+              <button type="button" data-color="#696969" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #696969" title="Dim Gray"></button>
+              <button type="button" data-color="#778899" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #778899" title="Light Slate Gray"></button>
+              <button type="button" data-color="#708090" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #708090" title="Slate Gray"></button>
+              <button type="button" data-color="#2F4F4F" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #2F4F4F" title="Dark Slate Gray"></button>
+              <button type="button" data-color="#8B7355" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #8B7355" title="Dark Khaki"></button>
+              <button type="button" data-color="#9C661F" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #9C661F" title="Raw Umber"></button>
+              <button type="button" data-color="#CC5500" class="color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all" style="background-color: #CC5500" title="Burnt Orange"></button>
             </div>
             <input
               id="themeColorInput"
@@ -480,6 +435,13 @@
               ></button>
               <button
                 type="button"
+                data-bg-color="#FFCCCB"
+                class="bg-color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
+                style="background-color: #FFCCCB"
+                title="Light Pink"
+              ></button>
+              <button
+                type="button"
                 data-bg-color="#FFF7ED"
                 class="bg-color-swatch size-8 rounded-full border-2 border-slate-200 hover:border-slate-400 transition-all"
                 style="background-color: #fff7ed"
@@ -535,12 +497,12 @@
               </div>
               <img
                 id="heroPreview"
-                class="hidden mt-4 w-full h-32 object-cover rounded-lg border border-slate-200"
+                class="hidden mt-4 w-full aspect-[7/5] object-cover rounded-lg border border-slate-200"
                 alt="Hero preview"
               />
             </div>
           </div>
-          <div class="md:col-span-2 pt-8 flex justify-center">
+          <div class=\"pt-8 flex justify-center\">
             <button
               id="saveGlobalSettingsBtn"
               class="text-[10px] uppercase tracking-[0.3em] font-bold border border-[var(--theme-primary)] text-[var(--theme-primary)] px-12 py-4 hover:bg-[var(--theme-primary)] hover:text-white transition-all"

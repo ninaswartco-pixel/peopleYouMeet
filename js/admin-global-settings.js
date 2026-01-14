@@ -95,6 +95,7 @@ saveBtn.addEventListener("click", async () => {
         titleFont: titleFont,
         authorFont: authorFont,
         bodyFont: bodyFont,
+        authorVisible: true,
       },
       { merge: true }
     );

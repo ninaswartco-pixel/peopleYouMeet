@@ -82,7 +82,7 @@
                 class="secret-author font-display text-lg md:text-xl tracking-[0.1em] select-none"
                 href="#"
               >
-                by Carla Schultz
+                Carla Schultz
               </a>
             </div>
           </div>
@@ -178,7 +178,9 @@
             // Update author if available
             if (data.siteAuthor) {
               const authorEl = document.querySelector(".secret-author");
-              if (authorEl) authorEl.textContent = "by " + data.siteAuthor;
+              if (authorEl) {
+                authorEl.textContent = data.siteAuthor;
+              }
             }
 
             // Update hero background if available
@@ -195,6 +197,40 @@
                 "--burnt-orange-transparent",
                 data.themeColor + "99"
               );
+            }
+
+            // Load and apply fonts
+            const fontMap = {
+              greatVibes: '"Great Vibes", cursive',
+              italiana: '"Italiana", serif',
+              playfair: '"Playfair Display", serif',
+              cormorant: '"Cormorant Garamond", serif',
+              montserrat: '"Montserrat", sans-serif',
+              crimsonText: '"Crimson Text", serif',
+              lora: '"Lora", serif',
+              merriweather: '"Merriweather", serif',
+              oldStandard: '"Old Standard TT", serif',
+              libreBaskerville: '"Libre Baskerville", serif',
+            };
+
+            if (data.titleFont) {
+              const titleFontFamily =
+                fontMap[data.titleFont] || fontMap.greatVibes;
+              const titleEl = document.querySelector("h1");
+              if (titleEl) titleEl.style.fontFamily = titleFontFamily;
+            }
+
+            if (data.authorFont) {
+              const authorFontFamily =
+                fontMap[data.authorFont] || fontMap.italiana;
+              const authorEl = document.querySelector(".secret-author");
+              if (authorEl) authorEl.style.fontFamily = authorFontFamily;
+            }
+
+            if (data.bodyFont) {
+              const bodyFontFamily =
+                fontMap[data.bodyFont] || fontMap.montserrat;
+              document.body.style.fontFamily = bodyFontFamily;
             }
 
             console.log("Global settings loaded:", data);
