@@ -189,6 +189,14 @@
               }
             }
 
+            // Update theme color if available
+            if (data.themeColor) {
+              document.documentElement.style.setProperty(
+                "--burnt-orange-transparent",
+                data.themeColor + "99"
+              );
+            }
+
             console.log("Global settings loaded:", data);
           }
         } catch (e) {

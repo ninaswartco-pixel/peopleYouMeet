@@ -1,5 +1,5 @@
 // js/admin-global-settings.js
-// Handles editing and saving global site settings (title and author)
+// Handles editing and saving global site settings (title, author, colors)
 import { db } from "./firebase-init.js";
 import {
   doc,
@@ -9,8 +9,26 @@ import {
 
 const siteTitleInput = document.getElementById("siteTitleInput");
 const siteAuthorInput = document.getElementById("siteAuthorInput");
+const themeColorInput = document.getElementById("themeColorInput");
+const postBgColorInput = document.getElementById("postBgColorInput");
 const saveBtn = document.getElementById("saveGlobalSettingsBtn");
-const statusMsg = document.getElementById("globalSettingsStatus");
+
+// Handle color swatch clicks
+document.querySelectorAll(".color-swatch").forEach((swatch) => {
+  swatch.addEventListener("click", () => {
+    const color = swatch.dataset.color;
+    themeColorInput.value = color;
+    // Update preview
+    document.documentElement.style.setProperty("--theme-primary", color);
+  });
+});
+
+document.querySelectorAll(".bg-color-swatch").forEach((swatch) => {
+  swatch.addEventListener("click", () => {
+    const color = swatch.dataset.bgColor;
+    postBgColorInput.value = color;
+  });
+});
 
 async function loadGlobalSettings() {
   try {
@@ -20,9 +38,21 @@ async function loadGlobalSettings() {
       const data = snap.data();
       siteTitleInput.value = data.siteTitle || "The People We Meet";
       siteAuthorInput.value = data.siteAuthor || "Carla Schultz";
+      themeColorInput.value = data.themeColor || "#CC5500";
+      postBgColorInput.value = data.postBgColor || "#FFFFFF";
+
+      // Apply theme color to current page
+      if (data.themeColor) {
+        document.documentElement.style.setProperty(
+          "--theme-primary",
+          data.themeColor
+        );
+      }
     } else {
       siteTitleInput.value = "The People We Meet";
       siteAuthorInput.value = "Carla Schultz";
+      themeColorInput.value = "#CC5500";
+      postBgColorInput.value = "#FFFFFF";
     }
     console.log("Settings loaded from Firestore");
   } catch (e) {
@@ -31,23 +61,45 @@ async function loadGlobalSettings() {
 }
 
 saveBtn.addEventListener("click", async () => {
+  const originalText = saveBtn.textContent;
   const title = siteTitleInput.value.trim();
   const author = siteAuthorInput.value.trim();
+  const themeColor = themeColorInput.value.trim();
+  const postBgColor = postBgColorInput.value.trim();
 
   try {
     await setDoc(
       doc(db, "siteSettings", "global"),
-      { siteTitle: title, siteAuthor: author },
+      {
+        siteTitle: title,
+        siteAuthor: author,
+        themeColor: themeColor,
+        postBgColor: postBgColor,
+      },
       { merge: true }
     );
 
-    statusMsg.textContent = "Saved!";
-    statusMsg.className = "text-green-600 text-xs mt-2";
-    setTimeout(() => (statusMsg.textContent = ""), 2000);
+    // Change button text to "Changes Saved"
+    saveBtn.textContent = "Changes Saved";
+    saveBtn.classList.add("bg-[var(--theme-primary)]", "text-white");
 
-    console.log("Settings saved to Firestore:", { title, author });
+    setTimeout(() => {
+      saveBtn.textContent = originalText;
+      saveBtn.classList.remove("bg-[var(--theme-primary)]", "text-white");
+    }, 2000);
+
+    console.log("Settings saved to Firestore:", {
+      title,
+      author,
+      themeColor,
+      postBgColor,
+    });
   } catch (e) {
     console.error("Failed to save settings:", e);
+    saveBtn.textContent = "Save Failed";
+    setTimeout(() => {
+      saveBtn.textContent = originalText;
+    }, 2000);
   }
 });
 

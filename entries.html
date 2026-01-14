@@ -59,41 +59,53 @@
     <header
       class="sticky top-0 z-50 bg-warm-cream/90 backdrop-blur-md border-b border-warm-brown/10 px-6 py-4"
     >
-      <div class="max-w-[1400px] mx-auto flex items-center justify-between">
-        <a
-          class="flex items-center gap-2 group text-warm-brown/70 hover:text-burnt-orange transition-colors"
-          href="index.html"
+      <div class="max-w-[1400px] mx-auto">
+        <h1
+          id="siteTitle"
+          class="font-script text-5xl text-center mb-4"
+          style="color: var(--burnt-orange, #bf5700)"
         >
-          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-          <span class="font-sans text-xs uppercase tracking-widest font-medium"
-            >Home</span
+          The People You Meet
+        </h1>
+        <div class="flex items-center justify-between">
+          <a
+            class="flex items-center gap-2 group text-warm-brown/70 hover:text-burnt-orange transition-colors"
+            href="index.html"
           >
-        </a>
-        <div class="flex items-center gap-6">
-          <div class="relative hidden sm:block">
+            <span class="material-symbols-outlined text-[20px]"
+              >arrow_back</span
+            >
             <span
-              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-warm-brown/40 text-[20px]"
-              >search</span
+              class="font-sans text-xs uppercase tracking-widest font-medium"
+              >Home</span
             >
-            <input
-              id="searchInput"
-              class="bg-warm-beige/50 border-warm-brown/10 rounded-full pl-10 pr-4 py-1.5 text-sm font-sans focus:ring-burnt-orange focus:border-burnt-orange w-64 placeholder:text-warm-brown/30"
-              placeholder="Search stories..."
-              type="text"
-            />
-          </div>
-          <div class="flex items-center gap-2">
-            <span
-              class="font-sans text-[10px] uppercase tracking-tighter text-warm-brown/50"
-              >Sort by</span
-            >
-            <select
-              id="sortSelect"
-              class="bg-transparent border-none text-sm font-sans font-semibold text-warm-brown focus:ring-0 cursor-pointer hover:text-burnt-orange py-0"
-            >
-              <option value="new">New Faces</option>
-              <option value="old">Old Faces</option>
-            </select>
+          </a>
+          <div class="flex items-center gap-6">
+            <div class="relative hidden sm:block">
+              <span
+                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-warm-brown/40 text-[20px]"
+                >search</span
+              >
+              <input
+                id="searchInput"
+                class="bg-warm-beige/50 border-warm-brown/10 rounded-full pl-10 pr-4 py-1.5 text-sm font-sans focus:ring-burnt-orange focus:border-burnt-orange w-64 placeholder:text-warm-brown/30"
+                placeholder="Search stories..."
+                type="text"
+              />
+            </div>
+            <div class="flex items-center gap-2">
+              <span
+                class="font-sans text-[10px] uppercase tracking-tighter text-warm-brown/50"
+                >Sort by</span
+              >
+              <select
+                id="sortSelect"
+                class="bg-transparent border-none text-sm font-sans font-semibold text-warm-brown focus:ring-0 cursor-pointer hover:text-burnt-orange py-0"
+              >
+                <option value="new">New Faces</option>
+                <option value="old">Old Faces</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -130,5 +142,43 @@
     <script type="module" src="js/firebase-init.js"></script>
     <script type="module" src="js/entries-firebase.js"></script>
     <script src="js/scripts.js"></script>
+    <script type="module">
+      import { db } from "./js/firebase-init.js";
+      import {
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+      // Load and apply theme color for title
+      async function loadThemeColor() {
+        try {
+          const settingsDoc = await getDoc(doc(db, "siteSettings", "global"));
+          if (settingsDoc.exists()) {
+            const settings = settingsDoc.data();
+            if (settings.themeColor) {
+              const title = document.getElementById("siteTitle");
+              if (title) {
+                title.style.color = settings.themeColor;
+              }
+              // Also update CSS custom property
+              document.documentElement.style.setProperty(
+                "--burnt-orange",
+                settings.themeColor
+              );
+            }
+            if (settings.siteTitle) {
+              const title = document.getElementById("siteTitle");
+              if (title) {
+                title.textContent = settings.siteTitle;
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error loading theme color:", error);
+        }
+      }
+
+      loadThemeColor();
+    </script>
   </body>
 </html>

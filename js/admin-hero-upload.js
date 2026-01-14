@@ -13,6 +13,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-storage.js";
 
 const heroUploadBox = document.getElementById("heroUploadBox");
+const heroUploadStatus = document.getElementById("heroUploadStatus");
 const heroImageFile = document.getElementById("heroImageFile");
 const heroPreview = document.getElementById("heroPreview");
 
@@ -50,11 +51,21 @@ if (heroImageFile) {
     // Check if user is authenticated
     const user = auth.currentUser;
     if (!user) {
-      alert("You must be logged in to upload images.");
+      heroUploadStatus.textContent = "Login Required";
+      heroUploadStatus.className =
+        "text-[10px] uppercase tracking-widest text-red-600";
+      setTimeout(() => {
+        heroUploadStatus.textContent = "Replace Hero Image";
+        heroUploadStatus.className =
+          "text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-slate-900";
+      }, 3000);
       console.error("Upload blocked: User not authenticated");
       return;
     }
 
+    heroUploadStatus.textContent = "Uploading...";
+    heroUploadStatus.className =
+      "text-[10px] uppercase tracking-widest text-blue-600";
     console.log("Starting hero image upload...");
 
     try {
@@ -88,10 +99,29 @@ if (heroImageFile) {
         heroPreview.classList.remove("hidden");
       }
 
-      alert("Hero image uploaded successfully!");
+      // Update status to success
+      heroUploadStatus.textContent = "Upload Successful";
+      heroUploadStatus.className =
+        "text-[10px] uppercase tracking-widest text-green-600";
+
+      setTimeout(() => {
+        heroUploadStatus.textContent = "Replace Hero Image";
+        heroUploadStatus.className =
+          "text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-slate-900";
+      }, 3000);
     } catch (error) {
       console.error("Hero image upload failed:", error);
-      alert("Failed to upload hero image. Check console for details.");
+
+      // Update status to failure
+      heroUploadStatus.textContent = "Upload Failed";
+      heroUploadStatus.className =
+        "text-[10px] uppercase tracking-widest text-red-600";
+
+      setTimeout(() => {
+        heroUploadStatus.textContent = "Replace Hero Image";
+        heroUploadStatus.className =
+          "text-[10px] uppercase tracking-widest text-slate-400 group-hover:text-slate-900";
+      }, 3000);
     }
   });
 }
