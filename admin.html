@@ -74,12 +74,13 @@
         <h1
           class="text-6xl md:text-7xl font-script text-[var(--theme-primary)] mb-4"
         >
-          Behind the Scenes
+          The Secret Room
         </h1>
         <p
+          id="admin-welcome"
           class="uppercase tracking-[0.3em] text-[10px] text-slate-400 font-medium"
         >
-          Administrator Workspace
+          Welcome Author
         </p>
       </header>
       <section class="mb-32">
@@ -687,7 +688,8 @@
     </div>
     <script type="module">
       import { signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-      import { auth } from "./js/firebase-init.js";
+      import { auth, db } from "./js/firebase-init.js";
+      import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
       const logoutBtn = document.getElementById("logout-confirm-btn");
       if (logoutBtn) {
         logoutBtn.addEventListener("click", async () => {
@@ -699,6 +701,24 @@
           }
         });
       }
+
+      // Update welcome text with author name from global settings
+      async function updateWelcomeAuthor() {
+        try {
+          const docRef = doc(db, "siteSettings", "global");
+          const snap = await getDoc(docRef);
+          if (snap.exists()) {
+            const data = snap.data();
+            const welcomeEl = document.getElementById("admin-welcome");
+            if (welcomeEl && data.siteAuthor) {
+              welcomeEl.textContent = `Welcome ${data.siteAuthor}`;
+            }
+          }
+        } catch (e) {
+          // fallback: do nothing
+        }
+      }
+      updateWelcomeAuthor();
     </script>
     <script type="module" src="js/firebase-init.js"></script>
     <script type="module" src="js/admin-hero-upload.js"></script>
