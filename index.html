@@ -84,11 +84,12 @@
       <div class="absolute inset-0 hero-bg">
         <div class="absolute inset-0 bg-black/20"></div>
       </div>
-      <div class="relative z-10 w-full max-w-3xl px-6">
+      <div class="relative z-10 w-full max-w-6xl px-6">
         <div class="text-center flex flex-col items-center gap-4">
           <div class="space-y-1">
             <h1
               class="text-white text-6xl md:text-8xl font-script leading-tight drop-shadow-2xl select-none"
+              style="word-break: keep-all; hyphens: none; min-height: 1.2em"
             ></h1>
             <div class="flex items-center justify-center">
               <a
@@ -185,7 +186,10 @@
               document.title =
                 data.siteTitle + " | " + (data.siteAuthor || "Carla Schultz");
               const titleEl = document.querySelector("h1");
-              if (titleEl) titleEl.textContent = data.siteTitle;
+              if (titleEl) {
+                // Apply typewriter effect
+                typewriterEffect(titleEl, data.siteTitle, 120);
+              }
             }
 
             // Update author if available
@@ -270,6 +274,48 @@
           console.error("Failed to load global settings:", e);
           showContent(); // Show content even on error
         }
+      }
+
+      // Typewriter effect function
+      function typewriterEffect(element, text, speed = 80) {
+        if (!element || !text) return Promise.resolve();
+
+        return new Promise((resolve) => {
+          let i = 0;
+          element.innerHTML = "";
+
+          // Wrap each line in a span with nowrap and add line break before "along the way" if present
+          const formattedText = text.replace(
+            /\s+(along the way)/gi,
+            '</span><br><span style="white-space: nowrap; display: inline-block;">$1'
+          );
+          const wrappedText =
+            '<span style="white-space: nowrap; display: inline-block;">' +
+            formattedText +
+            "</span>";
+
+          function type() {
+            if (i < wrappedText.length) {
+              // Handle HTML tags
+              if (wrappedText.charAt(i) === "<") {
+                const closingTag = wrappedText.indexOf(">", i);
+                if (closingTag !== -1) {
+                  element.innerHTML += wrappedText.substring(i, closingTag + 1);
+                  i = closingTag + 1;
+                  setTimeout(type, 0); // No delay for HTML tags
+                  return;
+                }
+              }
+              element.innerHTML += wrappedText.charAt(i);
+              i++;
+              setTimeout(type, speed);
+            } else {
+              resolve();
+            }
+          }
+
+          type();
+        });
       }
 
       // Function to show content and hide loading spinner
