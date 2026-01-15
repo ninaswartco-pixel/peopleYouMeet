@@ -66,6 +66,26 @@
       .content-loaded {
         opacity: 1;
       }
+      .fancy-entries-link {
+        background: none;
+        box-shadow: 0 2px 16px 0 rgba(184, 84, 11, 0.08);
+        transition: border-color 0.2s, color 0.2s, box-shadow 0.2s, width 0.2s;
+        min-width: 10rem;
+        display: inline-block;
+        text-align: center;
+      }
+      .fancy-entries-link:hover {
+        border-bottom: 2px solid #fff;
+        color: #fff;
+        box-shadow: 0 4px 24px 0 rgba(184, 84, 11, 0.18);
+        min-width: 12rem;
+      }
+      .fancy-entries-link:active {
+        border-bottom: 2px solid #fff;
+        color: #fff;
+        box-shadow: 0 6px 32px 0 rgba(184, 84, 11, 0.32);
+        min-width: 12rem;
+      }
     </style>
     <style>
       input:-webkit-autofill,
@@ -124,7 +144,8 @@
               href="entries.html"
             >
               <span
-                class="text-white text-sm font-light tracking-[0.4em] lowercase border-b border-white/40 pb-2 transition-opacity hover:opacity-70"
+                class="fancy-entries-link text-white text-sm font-light tracking-[0.4em] lowercase border-b border-white/40 pb-2 px-4 rounded-lg transition-all duration-200 cursor-pointer"
+                style="position: relative; z-index: 1"
               >
                 read entries
               </span>
