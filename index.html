@@ -55,15 +55,31 @@
         text-decoration: none !important;
       }
       .hero-bg {
-        background-image: url("resources/homeScreen.jpeg");
         background-size: cover;
         background-position: center;
+      }
+      /* Loading state */
+      .loading-content {
+        opacity: 0;
+        transition: opacity 0.3s ease-in;
+      }
+      .content-loaded {
+        opacity: 1;
       }
     </style>
   </head>
   <body class="text-white overflow-hidden">
+    <!-- Loading Spinner -->
+    <div
+      id="loading-spinner"
+      class="fixed inset-0 bg-black flex items-center justify-center z-50"
+    >
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white"
+      ></div>
+    </div>
     <main
-      class="relative h-screen w-full flex items-center justify-center overflow-hidden"
+      class="loading-content relative h-screen w-full flex items-center justify-center overflow-hidden"
     >
       <div class="absolute inset-0 hero-bg">
         <div class="absolute inset-0 bg-black/20"></div>
@@ -73,16 +89,13 @@
           <div class="space-y-1">
             <h1
               class="text-white text-6xl md:text-8xl font-script leading-tight drop-shadow-2xl select-none"
-            >
-              The People You Meet
-            </h1>
+            ></h1>
             <div class="flex items-center justify-center">
               <a
                 id="openLoginLink"
                 class="secret-author font-display text-lg md:text-xl tracking-[0.1em] select-none"
                 href="#"
               >
-                Carla Schultz
               </a>
             </div>
           </div>
@@ -183,12 +196,27 @@
               }
             }
 
-            // Update hero background if available
+            // Update hero background if available - THIS MUST LOAD
             if (data.heroImageUrl) {
               const heroBg = document.querySelector(".hero-bg");
               if (heroBg) {
-                heroBg.style.backgroundImage = "url(" + data.heroImageUrl + ")";
+                // Preload the image before showing content
+                const img = new Image();
+                img.onload = () => {
+                  heroBg.style.backgroundImage =
+                    "url(" + data.heroImageUrl + ")";
+                  showContent();
+                };
+                img.onerror = () => {
+                  console.error("Failed to load hero image");
+                  showContent(); // Still show content even if image fails
+                };
+                img.src = data.heroImageUrl;
+              } else {
+                showContent();
               }
+            } else {
+              showContent();
             }
 
             // Update theme color if available
@@ -234,9 +262,27 @@
             }
 
             console.log("Global settings loaded:", data);
+          } else {
+            console.log("No global settings found");
+            showContent(); // Show content even if no settings
           }
         } catch (e) {
           console.error("Failed to load global settings:", e);
+          showContent(); // Show content even on error
+        }
+      }
+
+      // Function to show content and hide loading spinner
+      function showContent() {
+        const spinner = document.getElementById("loading-spinner");
+        const main = document.querySelector("main");
+
+        if (spinner) {
+          spinner.style.display = "none";
+        }
+        if (main) {
+          main.classList.remove("loading-content");
+          main.classList.add("content-loaded");
         }
       }
 
