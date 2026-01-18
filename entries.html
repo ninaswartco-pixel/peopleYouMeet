@@ -203,7 +203,15 @@
           ></div>
         </div>
         <div class="text-warm-brown/60 font-sans text-xs">
-          <p>&copy; 2026 Carla</p>
+          <p>
+            &copy; 2026 Carla <span class="mx-2">·</span>
+            <button
+              id="contactAuthorBtn"
+              class="hover:text-burnt-orange transition-colors underline"
+            >
+              Contact the Author
+            </button>
+          </p>
           <p class="mt-2">
             <a
               href="privacy.html"
@@ -226,6 +234,112 @@
         </div>
       </div>
     </footer>
+
+    <!-- Contact Author Modal -->
+    <div
+      id="contactModal"
+      class="hidden fixed inset-0 bg-warm-brown/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-warm-cream border-none rounded-3xl shadow-2xl max-w-md w-full p-10 relative"
+      >
+        <button
+          id="closeModalBtn"
+          class="absolute top-6 right-6 text-warm-brown/50 hover:text-burnt-orange transition-colors"
+        >
+          <span class="material-symbols-outlined text-[24px]">close</span>
+        </button>
+        <h2 class="font-script text-4xl text-burnt-orange mb-3 pr-8">
+          Leave a note
+        </h2>
+        <p class="text-warm-brown/70 font-sans text-sm mb-6">
+          Type your message, appreciation, or concern to the author.
+        </p>
+        <form id="contactForm" class="space-y-5">
+          <div>
+            <textarea
+              id="messageInput"
+              rows="7"
+              placeholder="Your message..."
+              class="w-full px-5 py-4 bg-white/60 border-none rounded-2xl text-warm-brown font-sans text-sm focus:ring-2 focus:ring-burnt-orange/40 focus:outline-none shadow-sm"
+              required
+            ></textarea>
+          </div>
+          <div
+            id="confirmationMessage"
+            class="hidden text-burnt-orange/80 font-sans text-xs italic text-center py-2"
+          >
+            Your email app opened. Press send to deliver your message.
+          </div>
+          <div class="flex gap-3 pt-2">
+            <button
+              type="submit"
+              class="flex-1 bg-burnt-orange text-white font-sans text-sm uppercase tracking-wider py-3.5 rounded-2xl hover:bg-burnt-orange/90 transition-all font-medium shadow-sm"
+            >
+              Send via Email
+            </button>
+            <button
+              type="button"
+              id="cancelModalBtn"
+              class="flex-1 bg-warm-brown/5 text-warm-brown/70 font-sans text-sm uppercase tracking-wider py-3.5 rounded-2xl hover:bg-warm-brown/10 transition-all font-medium"
+            >
+              Close
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Contact Modal functionality
+      const contactModal = document.getElementById("contactModal");
+      const contactBtn = document.getElementById("contactAuthorBtn");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+      const cancelModalBtn = document.getElementById("cancelModalBtn");
+      const contactForm = document.getElementById("contactForm");
+      const messageInput = document.getElementById("messageInput");
+      const confirmationMessage = document.getElementById(
+        "confirmationMessage",
+      );
+
+      contactBtn.addEventListener("click", () => {
+        contactModal.classList.remove("hidden");
+        confirmationMessage.classList.add("hidden");
+        messageInput.value = "";
+      });
+
+      closeModalBtn.addEventListener("click", () => {
+        contactModal.classList.add("hidden");
+      });
+
+      cancelModalBtn.addEventListener("click", () => {
+        contactModal.classList.add("hidden");
+      });
+
+      contactModal.addEventListener("click", (e) => {
+        if (e.target === contactModal) {
+          contactModal.classList.add("hidden");
+        }
+      });
+
+      contactForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const message = messageInput.value.trim();
+
+        if (!message) {
+          alert("Please enter a message.");
+          return;
+        }
+
+        const subject = "Message from The People We Meet";
+        const body = message + "\n\n— Sent from the website contact modal";
+        const mailtoLink = `mailto:thepeoplewemeet.contact@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+        window.location.href = mailtoLink;
+
+        confirmationMessage.classList.remove("hidden");
+      });
+    </script>
     <script type="module" src="js/firebase-init.js"></script>
     <script type="module" src="js/entries-firebase.js"></script>
     <script src="js/scripts.js"></script>
