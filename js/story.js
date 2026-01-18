@@ -28,9 +28,11 @@ const prevStoryContainer = document.getElementById("prevStoryContainer");
 const nextStoryContainer = document.getElementById("nextStoryContainer");
 
 const loadStory = async () => {
+  const fetching = document.getElementById("fetchingMessage");
   if (!slug) {
     storyContainer.classList.add("hidden");
     notFoundMessage.classList.remove("hidden");
+    if (fetching) fetching.style.display = "none";
     return;
   }
 
@@ -39,13 +41,14 @@ const loadStory = async () => {
     const q = query(
       postsRef,
       where("slug", "==", slug),
-      where("published", "==", true)
+      where("published", "==", true),
     );
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
       storyContainer.classList.add("hidden");
       notFoundMessage.classList.remove("hidden");
+      if (fetching) fetching.style.display = "none";
       return;
     }
 
@@ -90,11 +93,13 @@ const loadStory = async () => {
       }
     });
 
+    if (fetching) fetching.style.display = "none";
     loadNavigation();
   } catch (error) {
     console.error("Error loading story:", error);
     storyContainer.classList.add("hidden");
     notFoundMessage.classList.remove("hidden");
+    if (fetching) fetching.style.display = "none";
   }
 };
 

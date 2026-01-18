@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -211,7 +211,7 @@
                 fontMap[settings.titleFont] || fontMap.greatVibes;
               document.documentElement.style.setProperty(
                 "--title-font",
-                titleFontFamily
+                titleFontFamily,
               );
             }
 
@@ -220,7 +220,7 @@
                 fontMap[settings.bodyFont] || fontMap.montserrat;
               document.documentElement.style.setProperty(
                 "--body-font",
-                bodyFontFamily
+                bodyFontFamily,
               );
               document.body.style.fontFamily = bodyFontFamily;
             }
@@ -232,5 +232,30 @@
 
       loadFonts();
     </script>
+
+    <footer
+      class="mt-20 border-t border-warm-brown/10 bg-warm-beige/30 py-8 px-6 text-center"
+    >
+      <div class="text-warm-brown/60 font-sans text-xs">
+        <p>&copy; 2026 Carla</p>
+        <p class="mt-2">
+          <a
+            href="privacy.html"
+            class="hover:text-burnt-orange transition-colors"
+            >Privacy</a
+          >
+          <span class="mx-2">·</span>
+          <a
+            href="disclaimer.html"
+            class="hover:text-burnt-orange transition-colors"
+            >Disclaimer</a
+          >
+          <span class="mx-2">·</span>
+          <a href="terms.html" class="hover:text-burnt-orange transition-colors"
+            >Terms</a
+          >
+        </p>
+      </div>
+    </footer>
   </body>
 </html>

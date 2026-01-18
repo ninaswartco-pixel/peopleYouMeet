@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Terms & Conditions - Carla Schultz</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@200;300;400;500&family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "warm-cream": "#FDFBF7",
+              "warm-brown": "#5C4033",
+              "burnt-orange": "#cc5500",
+            },
+            fontFamily: {
+              display: ["Italiana", "serif"],
+              script: ["Great Vibes", "cursive"],
+              body: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply font-body bg-warm-cream text-warm-brown antialiased;
+        }
+        h1 {
+          @apply font-display text-burnt-orange;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <div class="flex-grow">
+      <a
+        href="entries.html"
+        class="fixed top-6 left-6 text-warm-brown hover:text-burnt-orange transition-colors flex items-center gap-2 text-sm font-medium"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+          />
+        </svg>
+        Back to Site
+      </a>
+      <div class="max-w-3xl mx-auto px-6 py-16">
+        <h1 class="text-4xl md:text-5xl mb-8 text-center">
+          Terms & Conditions
+        </h1>
+        <div class="prose prose-lg max-w-none leading-relaxed">
+          <p class="mb-4">
+            By spending time on this website, you agree to these simple terms.
+            The content shared here is offered for personal enjoyment and
+            reflection, and how it is received or interpreted is ultimately up
+            to the reader.
+          </p>
+          <p class="mb-4">
+            All original writing and material on this website belongs to the
+            author unless stated otherwise. The technical creator and developer
+            of this website is responsible only for the design and functionality
+            of the platform and is not liable for the content, opinions, or
+            stories published by the author.
+          </p>
+          <p class="mb-4">
+            While every effort is made to share content thoughtfully and
+            respectfully, neither the website owner nor the technical creator
+            can be held responsible for any misunderstanding or outcomes that
+            may arise from engaging with the content. These terms may change
+            occasionally as the website evolves.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-warm-brown text-warm-cream py-6 mt-auto">
+      <div class="text-center text-sm">
+        <p>&copy; 2026 Carla</p>
+        <p class="mt-2">
+          <a
+            href="privacy.html"
+            class="hover:text-burnt-orange transition-colors"
+            >Privacy</a
+          >
+          <span class="mx-2">·</span>
+          <a
+            href="disclaimer.html"
+            class="hover:text-burnt-orange transition-colors"
+            >Disclaimer</a
+          >
+          <span class="mx-2">·</span>
+          <a href="terms.html" class="hover:text-burnt-orange transition-colors"
+            >Terms</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

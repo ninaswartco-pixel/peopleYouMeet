@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Privacy Policy - Carla Schultz</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italiana&family=Montserrat:wght@200;300;400;500&family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "warm-cream": "#FDFBF7",
+              "warm-brown": "#5C4033",
+              "burnt-orange": "#cc5500",
+            },
+            fontFamily: {
+              display: ["Italiana", "serif"],
+              script: ["Great Vibes", "cursive"],
+              body: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      @layer base {
+        body {
+          @apply font-body bg-warm-cream text-warm-brown antialiased;
+        }
+        h1 {
+          @apply font-display text-burnt-orange;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <div class="flex-grow">
+      <a
+        href="entries.html"
+        class="fixed top-6 left-6 text-warm-brown hover:text-burnt-orange transition-colors flex items-center gap-2 text-sm font-medium"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+          />
+        </svg>
+        Back to Site
+      </a>
+      <div class="max-w-3xl mx-auto px-6 py-16">
+        <h1 class="text-4xl md:text-5xl mb-8 text-center">Privacy Policy</h1>
+        <div class="prose prose-lg max-w-none leading-relaxed">
+          <p class="mb-4">
+            This website is a personal storytelling space created with care and
+            intention. Respect for privacy matters deeply to us, and any
+            personal information is handled thoughtfully and in line with South
+            Africa's Protection of Personal Information Act (POPIA).
+          </p>
+          <p class="mb-4">
+            If you choose to reach out through a message or contact form (now or
+            in the future), we may receive limited information such as your name
+            and email address. This information is used only to reply to your
+            message and is never shared, sold, or used for marketing purposes.
+          </p>
+          <p class="mb-4">
+            The website is supported by trusted services such as Google
+            Firebase, which assist with hosting, security, and performance.
+            These services may collect basic technical information as part of
+            normal operation. Reasonable care is taken to protect any
+            information we receive, and you are welcome to request access to,
+            correction of, or removal of your information at any time.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-warm-brown text-warm-cream py-6 mt-auto">
+      <div class="text-center text-sm">
+        <p>&copy; 2026 Carla</p>
+        <p class="mt-2">
+          <a
+            href="privacy.html"
+            class="hover:text-burnt-orange transition-colors"
+            >Privacy</a
+          >
+          <span class="mx-2">·</span>
+          <a
+            href="disclaimer.html"
+            class="hover:text-burnt-orange transition-colors"
+            >Disclaimer</a
+          >
+          <span class="mx-2">·</span>
+          <a href="terms.html" class="hover:text-burnt-orange transition-colors"
+            >Terms</a
+          >
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -6,12 +6,14 @@
     <title>Blog Entries List - Carla Schultz</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Playfair+Display+SC:wght@400;700&amp;family=Great+Vibes&amp;family=Montserrat:wght@300;400;500&amp;family=Italiana&amp;family=Playfair+Display:wght@400;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display+SC:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;500&family=Italiana&family=Playfair+Display:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
       rel="stylesheet"
     />
     <script id="tailwind-config">
@@ -53,6 +55,36 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+
+      /* Grid layout styles */
+      .grid-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .grid-layout article {
+        width: 100%;
+      }
+
+      .grid-layout .story-card {
+        height: auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .grid-layout .story-content {
+        flex: unset;
+        min-height: 0;
+        max-height: none;
+        overflow: visible;
+      }
+
+      /* Smooth transitions */
+      #firebase-posts {
+        transition: all 0.3s ease-in-out;
+      }
     </style>
   </head>
   <body class="min-h-screen selection:bg-burnt-orange/20">
@@ -86,18 +118,46 @@
                 type="text"
               />
             </div>
-            <div class="flex items-center gap-2">
-              <span
-                class="font-sans text-[10px] uppercase tracking-tighter text-warm-brown/50"
-                >Sort by</span
+            <div class="flex items-center gap-4">
+              <!-- View Toggle -->
+              <div
+                class="flex items-center gap-1 bg-warm-beige/50 rounded-full p-1"
               >
-              <select
-                id="sortSelect"
-                class="bg-transparent border-none text-sm font-sans font-semibold text-warm-brown focus:ring-0 cursor-pointer hover:text-burnt-orange py-0"
-              >
-                <option value="new">New Faces</option>
-                <option value="old">Old Faces</option>
-              </select>
+                <button
+                  id="verticalViewBtn"
+                  class="view-toggle-btn active p-2 rounded-full transition-all"
+                  data-view="vertical"
+                  title="Vertical View"
+                >
+                  <span class="material-symbols-outlined text-[20px]"
+                    >view_agenda</span
+                  >
+                </button>
+                <button
+                  id="gridViewBtn"
+                  class="view-toggle-btn p-2 rounded-full transition-all"
+                  data-view="grid"
+                  title="Grid View"
+                >
+                  <span class="material-symbols-outlined text-[20px]"
+                    >grid_view</span
+                  >
+                </button>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <span
+                  class="font-sans text-[10px] uppercase tracking-tighter text-warm-brown/50"
+                  >Sort by</span
+                >
+                <select
+                  id="sortSelect"
+                  class="bg-transparent border-none text-sm font-sans font-semibold text-warm-brown focus:ring-0 cursor-pointer hover:text-burnt-orange py-0"
+                >
+                  <option value="new">New Faces</option>
+                  <option value="old">Old Faces</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -123,24 +183,46 @@
             class="font-script text-4xl mb-2"
             style="color: var(--burnt-orange, #bf5700)"
           >
-            Carla Schultz
+            "We meet no ordinary people in our lives."
           </h4>
           <p
             class="font-sans text-[10px] uppercase tracking-[0.4em]"
             style="color: var(--burnt-orange, #bf5700)"
           >
-            Storyteller &amp; Photographer
+            -CS Lewis
           </p>
         </div>
         <div class="flex flex-col items-center gap-4">
           <p
             class="text-warm-brown/40 font-sans text-xs tracking-wider uppercase"
           >
-            End of stories for now
+            That’s all for now — more stories soon.
           </p>
           <div
             class="w-1 h-12 bg-gradient-to-b from-burnt-orange to-transparent"
           ></div>
+        </div>
+        <div class="text-warm-brown/60 font-sans text-xs">
+          <p>&copy; 2026 Carla</p>
+          <p class="mt-2">
+            <a
+              href="privacy.html"
+              class="hover:text-burnt-orange transition-colors"
+              >Privacy</a
+            >
+            <span class="mx-2">·</span>
+            <a
+              href="disclaimer.html"
+              class="hover:text-burnt-orange transition-colors"
+              >Disclaimer</a
+            >
+            <span class="mx-2">·</span>
+            <a
+              href="terms.html"
+              class="hover:text-burnt-orange transition-colors"
+              >Terms</a
+            >
+          </p>
         </div>
       </div>
     </footer>
@@ -169,10 +251,9 @@
               if (footerAuthor) {
                 footerAuthor.style.color = settings.themeColor;
               }
-              // Also update CSS custom property
               document.documentElement.style.setProperty(
                 "--burnt-orange",
-                settings.themeColor
+                settings.themeColor,
               );
             }
             if (settings.siteTitle) {
@@ -188,7 +269,6 @@
               }
             }
 
-            // Load and apply fonts
             const fontMap = {
               greatVibes: '"Great Vibes", cursive',
               italiana: '"Italiana", serif',
@@ -207,7 +287,7 @@
                 fontMap[settings.titleFont] || fontMap.greatVibes;
               document.documentElement.style.setProperty(
                 "--title-font",
-                titleFontFamily
+                titleFontFamily,
               );
               const title = document.getElementById("siteTitle");
               if (title) {
@@ -220,7 +300,7 @@
                 fontMap[settings.authorFont] || fontMap.italiana;
               document.documentElement.style.setProperty(
                 "--author-font",
-                authorFontFamily
+                authorFontFamily,
               );
               const footerAuthor = document.getElementById("footerAuthor");
               if (footerAuthor) {
@@ -233,7 +313,7 @@
                 fontMap[settings.bodyFont] || fontMap.montserrat;
               document.documentElement.style.setProperty(
                 "--body-font",
-                bodyFontFamily
+                bodyFontFamily,
               );
               document.body.style.fontFamily = bodyFontFamily;
             }
