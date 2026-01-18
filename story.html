@@ -6,12 +6,14 @@
     <title>Story Detail - Carla Schultz</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Playfair+Display+SC:wght@400;700&amp;family=Great+Vibes&amp;family=Montserrat:wght@300;400;500&amp;family=Italiana&amp;family=Playfair+Display:wght@400;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display+SC:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;500&family=Italiana&family=Playfair+Display:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
       rel="stylesheet"
     />
     <script id="tailwind-config">
@@ -76,33 +78,44 @@
         <article class="w-full flex flex-col items-center">
           <div class="w-full max-w-6xl">
             <div
-              class="bg-white/40 border border-warm-brown/5 rounded-2xl p-8 md:p-12 shadow-sm"
+              class="story-detail-card bg-white/40 border border-warm-brown/5 rounded-2xl p-8 md:p-12 shadow-sm"
             >
               <div class="text-center mb-10">
                 <h1
                   id="storyTitle"
-                  class="font-script text-6xl text-dark-brown mb-2"
-                >
-                  Loading...
-                </h1>
+                  class="story-detail-title font-script text-6xl text-dark-brown mb-2"
+                ></h1>
                 <p
                   id="storyDate"
-                  class="font-sans text-[11px] uppercase tracking-[0.3em] text-burnt-orange font-semibold"
-                >
-                  Loading...
-                </p>
+                  class="story-detail-date font-sans text-[11px] uppercase tracking-[0.3em] text-burnt-orange font-semibold"
+                ></p>
               </div>
-              <div id="imageCarousel" class="relative mb-10 max-w-4xl mx-auto">
+              <div
+                id="imageCarousel"
+                class="story-detail-image relative mb-10 max-w-2xl mx-auto"
+              >
                 <!-- Images will be dynamically added here -->
               </div>
-              <div id="storyContent" class="max-w-3xl mx-auto text-center">
-                <p class="text-xl leading-relaxed text-warm-brown/80">
-                  Loading...
-                </p>
+              <div
+                id="storyContent"
+                class="story-detail-content max-w-3xl mx-auto text-center"
+              ></div>
+              <div
+                id="fetchingMessage"
+                class="fixed inset-0 flex items-center justify-center z-50 bg-warm-cream/80"
+                style="display: none"
+              >
+                <div
+                  class="text-3xl font-script text-dark-brown animate-flipdown"
+                >
+                  Fetching the rest…
+                </div>
               </div>
 
               <!-- Navigation -->
-              <div class="mt-12 pt-8 border-t border-warm-brown/10">
+              <div
+                class="story-detail-nav mt-12 pt-8 border-t border-warm-brown/10"
+              >
                 <div class="flex flex-col md:flex-row justify-between gap-6">
                   <div id="prevStoryContainer" class="flex-1">
                     <a
@@ -184,6 +197,37 @@
     </main>
     <script type="module" src="js/firebase-init.js"></script>
     <script type="module" src="js/story.js"></script>
+    <style>
+      @keyframes flipdown {
+        0% {
+          transform: rotateX(-90deg);
+          opacity: 0;
+        }
+        60% {
+          transform: rotateX(20deg);
+          opacity: 1;
+        }
+        80% {
+          transform: rotateX(-10deg);
+        }
+        100% {
+          transform: rotateX(0deg);
+        }
+      }
+      .animate-flipdown {
+        animation: flipdown 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-origin: top center;
+        display: inline-block;
+      }
+    </style>
+    <script>
+      // Show the fetching message overlay on page load, hide when content is ready
+      document.addEventListener("DOMContentLoaded", function () {
+        const fetching = document.getElementById("fetchingMessage");
+        fetching.style.display = "flex";
+      });
+      // You should hide this overlay in your js/story.js when the story is loaded
+    </script>
     <script type="module">
       import { db } from "./js/firebase-init.js";
       import {
@@ -234,7 +278,7 @@
     </script>
 
     <footer
-      class="mt-20 border-t border-warm-brown/10 bg-warm-beige/30 py-8 px-6 text-center"
+      class="mt-16 border-t border-warm-brown/10 bg-warm-beige/30 py-6 px-6 text-center"
     >
       <div class="text-warm-brown/60 font-sans text-xs">
         <p>
