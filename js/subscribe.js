@@ -28,6 +28,8 @@ export async function subscribe(email) {
   }
 
   const token = generateToken();
+  // Store email locally so likes can identify this subscriber
+  localStorage.setItem("subscriberEmail", email.toLowerCase());
   await addDoc(subscribersRef, {
     email: email.toLowerCase(),
     token,
@@ -50,8 +52,9 @@ export async function unsubscribeByToken(token) {
   return { success: true, message: "You've been unsubscribed. You won't receive further emails." };
 }
 
-// Unsubscribe by email
+// Unsubscribe by email (also clears local subscriber state)
 export async function unsubscribeByEmail(email) {
+  localStorage.removeItem("subscriberEmail");
   const q = query(subscribersRef, where("email", "==", email.toLowerCase()));
   const snapshot = await getDocs(q);
   if (snapshot.empty) {

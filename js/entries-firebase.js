@@ -7,6 +7,7 @@ import {
   where,
   getDocs,
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { hasLiked, addLike, removeLike, getSubscriberEmail } from "./likes.js";
 
 const postsContainer = document.getElementById("firebase-posts");
 const searchInput = document.getElementById("searchInput");
@@ -130,6 +131,8 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
         : plainContent;
     const coverImageUrl = post.coverImageUrl;
     const slug = post.slug || post.id;
+    const postId = post.id;
+    const liked = hasLiked(postId);
 
     const cardClass = isGrid
       ? "story-card bg-white/40 border border-warm-brown/5 rounded-2xl p-4 shadow-sm transition-all hover:shadow-md hover:bg-white/60 h-full flex flex-col"
@@ -141,9 +144,14 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
           isGrid ? "h-full" : "max-w-3xl"
         } group" href="story.html?slug=${slug}" data-slug="${slug}">
           <div class="${cardClass} relative">
-            <button class="share-btn absolute top-3 right-3 p-2 rounded-full text-warm-brown/25 hover:text-warm-brown/60 hover:bg-warm-brown/5 transition-all z-10" data-share-title="${title}" data-share-slug="${slug}" title="Share">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            </button>
+            <div class="absolute top-3 right-3 flex gap-1 z-10">
+              <button class="like-btn p-2 rounded-full hover:text-red-500 transition-all" style="color:${liked ? "#ef4444" : "rgba(92,64,51,0.25)"}" data-post-id="${postId}" title="Like">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${liked ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </button>
+              <button class="share-btn p-2 rounded-full text-warm-brown/25 hover:text-warm-brown/60 hover:bg-warm-brown/5 transition-all" data-share-title="${title}" data-share-slug="${slug}" title="Share">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </button>
+            </div>
             <div class="text-center mb-${isGrid ? "4" : "8"}">
               <h3 class="font-script text-${
                 isGrid ? "3xl" : "4xl"
@@ -183,6 +191,35 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
   });
 
   postsContainer.innerHTML = html;
+
+  // Like button handlers
+  postsContainer.querySelectorAll(".like-btn").forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const postId = btn.dataset.postId;
+      const svg = btn.querySelector("svg");
+      const alreadyLiked = hasLiked(postId);
+
+      if (alreadyLiked) {
+        await removeLike(postId);
+        btn.style.color = "rgba(92,64,51,0.25)";
+        svg.setAttribute("fill", "none");
+        return;
+      }
+
+      // If subscriber, like immediately
+      if (getSubscriberEmail()) {
+        await addLike(postId);
+        btn.style.color = "#ef4444";
+        svg.setAttribute("fill", "currentColor");
+        return;
+      }
+
+      // Not a subscriber — show name prompt
+      showLikePrompt(postId, btn, svg);
+    });
+  });
 
   // Share button handlers
   postsContainer.querySelectorAll(".share-btn").forEach((btn) => {
@@ -242,6 +279,49 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
       };
       setTimeout(() => document.addEventListener("click", closeMenu), 0);
     });
+  });
+}
+
+// Like name prompt for non-subscribers
+function showLikePrompt(postId, btn, svg) {
+  document.querySelectorAll(".like-prompt").forEach((m) => m.remove());
+
+  const prompt = document.createElement("div");
+  prompt.className = "like-prompt";
+  prompt.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(92,64,51,0.3);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;";
+
+  prompt.innerHTML = `
+    <div style="background:#FDFBF7;border-radius:20px;padding:32px;max-width:320px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.12);font-family:'Montserrat',sans-serif;text-align:center;">
+      <p style="font-size:14px;color:#5C4033;margin-bottom:20px;">Leave your name so Carla knows who liked her story</p>
+      <input type="text" placeholder="Your name" style="width:100%;padding:10px 16px;border:1px solid rgba(92,64,51,0.15);border-radius:12px;font-size:14px;color:#5C4033;outline:none;margin-bottom:12px;background:rgba(255,255,255,0.6);font-family:'Montserrat',sans-serif;" />
+      <button class="like-prompt-submit" style="width:100%;padding:10px;background:#BF5700;color:white;border:none;border-radius:12px;font-size:12px;text-transform:uppercase;letter-spacing:2px;cursor:pointer;font-family:'Montserrat',sans-serif;margin-bottom:8px;">Like</button>
+      <button class="like-prompt-anon" style="width:100%;padding:10px;background:rgba(92,64,51,0.06);border:none;border-radius:12px;color:#5C4033;font-size:13px;font-weight:500;cursor:pointer;font-family:'Montserrat',sans-serif;">Like anonymously</button>
+    </div>
+  `;
+
+  document.body.appendChild(prompt);
+
+  const input = prompt.querySelector("input");
+  input.focus();
+
+  const doLike = async (name) => {
+    prompt.remove();
+    await addLike(postId, name);
+    btn.style.color = "#ef4444";
+    svg.setAttribute("fill", "currentColor");
+  };
+
+  prompt.querySelector(".like-prompt-submit").addEventListener("click", () => {
+    doLike(input.value.trim() || "Anonymous");
+  });
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") doLike(input.value.trim() || "Anonymous");
+  });
+  prompt.querySelector(".like-prompt-anon").addEventListener("click", () => {
+    doLike("Anonymous");
+  });
+  prompt.addEventListener("click", (e) => {
+    if (e.target === prompt) prompt.remove();
   });
 }
 

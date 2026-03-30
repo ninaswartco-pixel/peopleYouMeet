@@ -4,8 +4,8 @@ import {
   query,
   where,
   getDocs,
-  orderBy,
 } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { hasLiked, addLike, removeLike, getSubscriberEmail } from "./likes.js";
 
 // Utility to get URL parameters
 const getUrlParameter = (name) => {
@@ -52,8 +52,10 @@ const loadStory = async () => {
       return;
     }
 
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
+    let storyDocId = null;
+    querySnapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      storyDocId = docSnap.id;
 
       // Set title
       storyTitle.textContent = data.title;
@@ -101,6 +103,62 @@ const loadStory = async () => {
         `;
       }
     });
+
+    // Like button handler
+    const likeBtn = document.getElementById("storyLikeBtn");
+    if (likeBtn && storyDocId) {
+      const liked = hasLiked(storyDocId);
+      const svg = likeBtn.querySelector("svg");
+      if (liked) {
+        likeBtn.style.color = "#ef4444";
+        svg.setAttribute("fill", "currentColor");
+      }
+
+      likeBtn.addEventListener("click", async () => {
+        if (hasLiked(storyDocId)) {
+          await removeLike(storyDocId);
+          likeBtn.style.color = "rgba(92,64,51,0.3)";
+          svg.setAttribute("fill", "none");
+          return;
+        }
+
+        if (getSubscriberEmail()) {
+          await addLike(storyDocId);
+          likeBtn.style.color = "#ef4444";
+          svg.setAttribute("fill", "currentColor");
+          return;
+        }
+
+        // Not a subscriber — show name prompt
+        document.querySelectorAll(".like-prompt").forEach((m) => m.remove());
+        const prompt = document.createElement("div");
+        prompt.className = "like-prompt";
+        prompt.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(92,64,51,0.3);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;";
+        prompt.innerHTML = `
+          <div style="background:#FDFBF7;border-radius:20px;padding:32px;max-width:320px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.12);font-family:'Montserrat',sans-serif;text-align:center;">
+            <p style="font-size:14px;color:#5C4033;margin-bottom:20px;">Leave your name so Carla knows who liked her story</p>
+            <input type="text" placeholder="Your name" style="width:100%;padding:10px 16px;border:1px solid rgba(92,64,51,0.15);border-radius:12px;font-size:14px;color:#5C4033;outline:none;margin-bottom:12px;background:rgba(255,255,255,0.6);font-family:'Montserrat',sans-serif;" />
+            <button class="like-prompt-submit" style="width:100%;padding:10px;background:#BF5700;color:white;border:none;border-radius:12px;font-size:12px;text-transform:uppercase;letter-spacing:2px;cursor:pointer;font-family:'Montserrat',sans-serif;margin-bottom:8px;">Like</button>
+            <button class="like-prompt-anon" style="width:100%;padding:10px;background:rgba(92,64,51,0.06);border:none;border-radius:12px;color:#5C4033;font-size:13px;font-weight:500;cursor:pointer;font-family:'Montserrat',sans-serif;">Like anonymously</button>
+          </div>
+        `;
+        document.body.appendChild(prompt);
+        const input = prompt.querySelector("input");
+        input.focus();
+
+        const doLike = async (name) => {
+          prompt.remove();
+          await addLike(storyDocId, name);
+          likeBtn.style.color = "#ef4444";
+          svg.setAttribute("fill", "currentColor");
+        };
+
+        prompt.querySelector(".like-prompt-submit").addEventListener("click", () => doLike(input.value.trim() || "Anonymous"));
+        input.addEventListener("keydown", (e) => { if (e.key === "Enter") doLike(input.value.trim() || "Anonymous"); });
+        prompt.querySelector(".like-prompt-anon").addEventListener("click", () => doLike("Anonymous"));
+        prompt.addEventListener("click", (e) => { if (e.target === prompt) prompt.remove(); });
+      });
+    }
 
     // Share button handler
     const shareBtn = document.getElementById("storyShareBtn");

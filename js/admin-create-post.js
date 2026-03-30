@@ -31,6 +31,24 @@ const messageDiv = document.getElementById("postMessage");
 const alignLeftBtn = document.getElementById("alignLeftBtn");
 const alignCenterBtn = document.getElementById("alignCenterBtn");
 
+// Rich text formatting buttons
+const formatBoldBtn = document.getElementById("formatBold");
+const formatItalicBtn = document.getElementById("formatItalic");
+const formatUnderlineBtn = document.getElementById("formatUnderline");
+
+formatBoldBtn.addEventListener("click", () => {
+  document.execCommand("bold", false, null);
+  contentInput.focus();
+});
+formatItalicBtn.addEventListener("click", () => {
+  document.execCommand("italic", false, null);
+  contentInput.focus();
+});
+formatUnderlineBtn.addEventListener("click", () => {
+  document.execCommand("underline", false, null);
+  contentInput.focus();
+});
+
 // Track selected alignment (default: center)
 let selectedAlignment = "center";
 
@@ -99,7 +117,7 @@ function resetForm() {
   saveBtn.textContent = "Save Story";
   titleInput.value = "";
   dateInput.valueAsDate = new Date();
-  contentInput.value = "";
+  contentInput.innerHTML = "";
   publishedInput.checked = true;
   coverFileInput.value = "";
   coverPreview.classList.add("hidden");
@@ -159,7 +177,7 @@ saveBtn.addEventListener("click", async () => {
 
   const title = titleInput.value.trim();
   const dateStr = dateInput.value;
-  const content = contentInput.value.trim();
+  const content = contentInput.innerHTML.trim();
   const published = publishedInput.checked;
   const coverFile = coverFileInput.files[0];
 
@@ -182,7 +200,7 @@ saveBtn.addEventListener("click", async () => {
     showMessage("Please select a date", true);
     return;
   }
-  if (!content) {
+  if (!content || content === "<br>") {
     showMessage("Please enter story content", true);
     return;
   }

@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="stylesheet" href="css/styles.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Italiana&amp;family=Montserrat:wght@200;300;400;500&amp;family=Great+Vibes&amp;family=Playfair+Display:wght@400;700&amp;family=Cormorant+Garamond:wght@400;600&amp;family=Crimson+Text:wght@400;600&amp;family=Lora:wght@400;500;600&amp;family=Merriweather:wght@300;400;700&amp;family=Old+Standard+TT:wght@400;700&amp;family=Libre+Baskerville:wght@400;700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Italiana&amp;family=Montserrat:wght@200;300;400;500&amp;family=Great+Vibes&amp;family=Playfair+Display:wght@400;700&amp;family=Cormorant+Garamond:wght@400;600&amp;family=Crimson+Text:wght@400;600&amp;family=Lora:wght@400;500;600&amp;family=Merriweather:wght@300;400;700&amp;family=Old+Standard+TT:wght@400;700&amp;family=Libre+Baskerville:wght@400;700&amp;family=Dancing+Script:wght@700&amp;family=Satisfy&amp;family=Caveat:wght@400;600&amp;family=Abril+Fatface&amp;family=Cinzel:wght@400;600;700&amp;display=swap"
       rel="stylesheet"
     />
     <link
@@ -66,6 +66,17 @@
       #logout-modal:target {
         display: flex;
       }
+      /* Rich text editor placeholder */
+      #postContent:empty:before {
+        content: attr(data-placeholder);
+        color: #94a3b8;
+        pointer-events: none;
+      }
+      #postContent:focus {
+        outline: none !important;
+        box-shadow: none !important;
+        border-color: var(--theme-primary) !important;
+      }
     </style>
   </head>
   <body class="min-h-screen flex flex-col relative">
@@ -101,6 +112,26 @@
         </div>
         <div id="storiesList" class="space-y-4"></div>
       </section>
+
+      <!-- Subscribers Section -->
+      <section class="border-t border-slate-100 pt-20">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-3xl tracking-tight text-[var(--theme-primary)] uppercase font-display">
+            Subscribers
+          </h2>
+          <button
+            id="toggleSubscribersBtn"
+            class="text-[10px] uppercase tracking-widest font-bold text-slate-400 hover:text-[var(--theme-primary)] transition-colors flex items-center gap-2"
+          >
+            <span class="material-symbols-outlined text-base" id="subscribersArrow">expand_more</span>
+            View Subscribers
+          </button>
+        </div>
+        <div id="subscribersList" class="hidden space-y-2">
+          <p class="text-sm text-slate-400">Loading...</p>
+        </div>
+      </section>
+
       <section class="border-t border-slate-100 pt-20">
         <h2
           class="text-3xl tracking-tight mb-16 text-center text-[var(--theme-primary)] uppercase font-display"
@@ -197,6 +228,36 @@
               >
                 Libre Baskerville
               </option>
+              <option
+                value="dancingScript"
+                style="font-family: 'Dancing Script', cursive"
+              >
+                Dancing Script
+              </option>
+              <option
+                value="satisfy"
+                style="font-family: 'Satisfy', cursive"
+              >
+                Satisfy
+              </option>
+              <option
+                value="caveat"
+                style="font-family: 'Caveat', cursive"
+              >
+                Caveat
+              </option>
+              <option
+                value="abrilFatface"
+                style="font-family: 'Abril Fatface', serif"
+              >
+                Abril Fatface
+              </option>
+              <option
+                value="cinzel"
+                style="font-family: 'Cinzel', serif"
+              >
+                Cinzel
+              </option>
             </select>
           </div>
           <div class="space-y-2">
@@ -262,6 +323,36 @@
               >
                 Libre Baskerville
               </option>
+              <option
+                value="dancingScript"
+                style="font-family: 'Dancing Script', cursive"
+              >
+                Dancing Script
+              </option>
+              <option
+                value="satisfy"
+                style="font-family: 'Satisfy', cursive"
+              >
+                Satisfy
+              </option>
+              <option
+                value="caveat"
+                style="font-family: 'Caveat', cursive"
+              >
+                Caveat
+              </option>
+              <option
+                value="abrilFatface"
+                style="font-family: 'Abril Fatface', serif"
+              >
+                Abril Fatface
+              </option>
+              <option
+                value="cinzel"
+                style="font-family: 'Cinzel', serif"
+              >
+                Cinzel
+              </option>
             </select>
           </div>
           <div class="space-y-2">
@@ -326,6 +417,36 @@
                 style="font-family: 'Libre Baskerville', serif"
               >
                 Libre Baskerville
+              </option>
+              <option
+                value="dancingScript"
+                style="font-family: 'Dancing Script', cursive"
+              >
+                Dancing Script
+              </option>
+              <option
+                value="satisfy"
+                style="font-family: 'Satisfy', cursive"
+              >
+                Satisfy
+              </option>
+              <option
+                value="caveat"
+                style="font-family: 'Caveat', cursive"
+              >
+                Caveat
+              </option>
+              <option
+                value="abrilFatface"
+                style="font-family: 'Abril Fatface', serif"
+              >
+                Abril Fatface
+              </option>
+              <option
+                value="cinzel"
+                style="font-family: 'Cinzel', serif"
+              >
+                Cinzel
               </option>
             </select>
           </div>
@@ -614,15 +735,37 @@
           <div class="space-y-2">
             <label
               class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
-              for="postContent"
               >Story Content</label
             >
-            <textarea
+            <!-- Formatting toolbar -->
+            <div class="flex gap-1 border border-slate-200 border-b-0 rounded-t px-2 py-1.5 bg-slate-50/50">
+              <button
+                type="button"
+                id="formatBold"
+                class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 transition-colors text-slate-500 hover:text-slate-800 font-bold text-sm"
+                title="Bold (Ctrl+B)"
+              >B</button>
+              <button
+                type="button"
+                id="formatItalic"
+                class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 transition-colors text-slate-500 hover:text-slate-800 italic text-sm"
+                title="Italic (Ctrl+I)"
+              >I</button>
+              <button
+                type="button"
+                id="formatUnderline"
+                class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 transition-colors text-slate-500 hover:text-slate-800 underline text-sm"
+                title="Underline (Ctrl+U)"
+              >U</button>
+            </div>
+            <!-- Rich text editor -->
+            <div
               id="postContent"
-              rows="10"
-              placeholder="Share the story of the person you met..."
-              class="w-full border border-slate-200 rounded p-4 text-lg font-serif focus:border-[var(--theme-primary)] focus:ring-0 bg-transparent transition-colors resize-y"
-            ></textarea>
+              contenteditable="true"
+              class="w-full border border-slate-200 rounded-b p-4 text-lg font-serif focus:border-[var(--theme-primary)] focus:outline-none bg-transparent transition-colors min-h-[250px]"
+              style="white-space: pre-wrap;"
+              data-placeholder="Share the story of the person you met..."
+            ></div>
           </div>
 
           <div class="space-y-2">
@@ -753,6 +896,63 @@
     <script type="module" src="js/admin-stories.js"></script>
     <script src="js/scripts.js"></script>
     <script type="module" src="js/admin-global-settings.js"></script>
+    <script type="module">
+      import { db } from "./js/firebase-init.js";
+      import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+
+      const toggleBtn = document.getElementById("toggleSubscribersBtn");
+      const listDiv = document.getElementById("subscribersList");
+      const arrow = document.getElementById("subscribersArrow");
+      let loaded = false;
+
+      toggleBtn.addEventListener("click", async () => {
+        if (!listDiv.classList.contains("hidden")) {
+          listDiv.classList.add("hidden");
+          arrow.textContent = "expand_more";
+          return;
+        }
+
+        listDiv.classList.remove("hidden");
+        arrow.textContent = "expand_less";
+
+        if (loaded) return;
+
+        try {
+          const snap = await getDocs(collection(db, "subscribers"));
+          if (snap.empty) {
+            listDiv.innerHTML = '<p class="text-sm text-slate-400 italic">No subscribers yet</p>';
+            loaded = true;
+            return;
+          }
+
+          let html = `<p class="text-[10px] uppercase tracking-widest text-slate-400 mb-3">${snap.size} subscriber${snap.size !== 1 ? "s" : ""}</p>`;
+          html += '<div class="space-y-2">';
+          snap.forEach((doc) => {
+            const sub = doc.data();
+            const date = sub.subscribedAt && sub.subscribedAt.toDate
+              ? sub.subscribedAt.toDate().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
+              : "";
+            html += `
+              <div class="flex items-center justify-between p-4 bg-soft-grey border border-slate-50 hover:border-[var(--theme-primary)] transition-all">
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-[var(--theme-primary)] text-lg">mail</span>
+                  <div>
+                    <p class="text-sm font-medium">${sub.email}</p>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Subscribed ${date}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          html += '</div>';
+          listDiv.innerHTML = html;
+          loaded = true;
+        } catch (err) {
+          console.error("Error loading subscribers:", err);
+          listDiv.innerHTML = '<p class="text-sm text-red-400">Error loading subscribers</p>';
+        }
+      });
+    </script>
     
     <footer class="bg-warm-brown text-warm-cream py-6 mt-16">
       <div class="text-center text-sm">
