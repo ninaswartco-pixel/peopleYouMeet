@@ -625,6 +625,33 @@
             ></textarea>
           </div>
 
+          <div class="space-y-2">
+            <label
+              class="text-[10px] uppercase tracking-widest font-bold text-slate-400"
+              >Text Alignment</label
+            >
+            <div class="flex gap-3">
+              <button
+                type="button"
+                id="alignLeftBtn"
+                class="flex items-center gap-2 px-5 py-2.5 border border-slate-200 text-sm font-body text-slate-600 hover:border-[var(--theme-primary)] hover:text-[var(--theme-primary)] transition-all"
+                data-align="left"
+              >
+                <span class="material-symbols-outlined text-base">format_align_left</span>
+                Left
+              </button>
+              <button
+                type="button"
+                id="alignCenterBtn"
+                class="flex items-center gap-2 px-5 py-2.5 border border-[var(--theme-primary)] bg-[var(--theme-primary)]/5 text-sm font-body text-[var(--theme-primary)] transition-all"
+                data-align="center"
+              >
+                <span class="material-symbols-outlined text-base">format_align_center</span>
+                Center
+              </button>
+            </div>
+          </div>
+
           <div class="flex items-center gap-3">
             <input
               id="postPublished"

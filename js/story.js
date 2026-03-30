@@ -74,6 +74,10 @@ const loadStory = async () => {
         storyDate.textContent = "DATE UNAVAILABLE";
       }
 
+      // Apply text alignment
+      const align = data.textAlign || "center";
+      storyContent.style.textAlign = align;
+
       // Set content — render HTML from old posts, convert newlines for plain-text posts
       const raw = data.content || "";
       const hasHtml = /<[a-z][\s\S]*>/i.test(raw);
@@ -97,6 +101,62 @@ const loadStory = async () => {
         `;
       }
     });
+
+    // Share button handler
+    const shareBtn = document.getElementById("storyShareBtn");
+    if (shareBtn) {
+      shareBtn.addEventListener("click", () => {
+        document.querySelectorAll(".share-menu").forEach((m) => m.remove());
+
+        const url = window.location.href;
+        const title = storyTitle.textContent;
+
+        const menu = document.createElement("div");
+        menu.className = "share-menu";
+        menu.style.cssText = "position:absolute;top:100%;right:0;background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:6px 0;box-shadow:0 4px 16px rgba(0,0,0,0.08);z-index:50;min-width:150px;font-family:sans-serif;font-size:13px;";
+
+        const copyItem = document.createElement("button");
+        copyItem.textContent = "Copy link";
+        copyItem.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;padding:8px 14px;border:none;background:none;cursor:pointer;color:#5a4a3a;text-align:left;";
+        copyItem.onmouseenter = () => copyItem.style.background = "rgba(0,0,0,0.04)";
+        copyItem.onmouseleave = () => copyItem.style.background = "none";
+        copyItem.addEventListener("click", async (ev) => {
+          ev.stopPropagation();
+          await navigator.clipboard.writeText(url);
+          copyItem.textContent = "Copied!";
+          setTimeout(() => menu.remove(), 1000);
+        });
+        menu.appendChild(copyItem);
+
+        if (navigator.share) {
+          const shareItem = document.createElement("button");
+          shareItem.textContent = "Share...";
+          shareItem.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;padding:8px 14px;border:none;background:none;cursor:pointer;color:#5a4a3a;text-align:left;";
+          shareItem.onmouseenter = () => shareItem.style.background = "rgba(0,0,0,0.04)";
+          shareItem.onmouseleave = () => shareItem.style.background = "none";
+          shareItem.addEventListener("click", async (ev) => {
+            ev.stopPropagation();
+            try { await navigator.share({ title, url }); } catch {}
+            menu.remove();
+          });
+          menu.appendChild(shareItem);
+        }
+
+        const rect = shareBtn.getBoundingClientRect();
+        menu.style.position = "fixed";
+        menu.style.top = `${rect.bottom + 4}px`;
+        menu.style.right = `${window.innerWidth - rect.right}px`;
+        document.body.appendChild(menu);
+
+        const closeMenu = (ev) => {
+          if (!menu.contains(ev.target) && ev.target !== shareBtn) {
+            menu.remove();
+            document.removeEventListener("click", closeMenu);
+          }
+        };
+        setTimeout(() => document.addEventListener("click", closeMenu), 0);
+      });
+    }
 
     if (fetching) fetching.style.display = "none";
     loadNavigation();

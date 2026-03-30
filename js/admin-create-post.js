@@ -28,6 +28,38 @@ const publishedInput = document.getElementById("postPublished");
 const coverFileInput = document.getElementById("postCoverFile");
 const coverPreview = document.getElementById("postCoverPreview");
 const messageDiv = document.getElementById("postMessage");
+const alignLeftBtn = document.getElementById("alignLeftBtn");
+const alignCenterBtn = document.getElementById("alignCenterBtn");
+
+// Track selected alignment (default: center)
+let selectedAlignment = "center";
+
+function updateAlignButtons() {
+  const active = "border-[var(--theme-primary)] bg-[var(--theme-primary)]/5 text-[var(--theme-primary)]";
+  const inactive = "border-slate-200 text-slate-600";
+  [alignLeftBtn, alignCenterBtn].forEach((btn) => {
+    const isActive = btn.dataset.align === selectedAlignment;
+    btn.className = btn.className
+      .replace(/border-\[var\(--theme-primary\)\]/g, "")
+      .replace(/bg-\[var\(--theme-primary\)\]\/5/g, "")
+      .replace(/text-\[var\(--theme-primary\)\]/g, "")
+      .replace(/border-slate-200/g, "")
+      .replace(/text-slate-600/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    btn.classList.add(...(isActive ? active : inactive).split(" "));
+  });
+}
+
+alignLeftBtn.addEventListener("click", () => {
+  selectedAlignment = "left";
+  updateAlignButtons();
+});
+
+alignCenterBtn.addEventListener("click", () => {
+  selectedAlignment = "center";
+  updateAlignButtons();
+});
 
 // Set default date to today
 dateInput.valueAsDate = new Date();
@@ -74,6 +106,8 @@ function resetForm() {
   coverPreview.querySelector("img").src = "";
   messageDiv.classList.add("hidden");
   messageDiv.textContent = "";
+  selectedAlignment = "center";
+  updateAlignButtons();
 }
 
 // Show message
@@ -200,6 +234,7 @@ saveBtn.addEventListener("click", async () => {
       date: chosenTimestamp,
       published,
       coverImageUrl,
+      textAlign: selectedAlignment,
     };
 
     if (isEditMode) {

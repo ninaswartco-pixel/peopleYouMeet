@@ -157,6 +157,17 @@ async function openEditModal(postId) {
       coverPreview.classList.remove("hidden");
     }
 
+    // Restore alignment setting
+    const alignLeftBtn = document.getElementById("alignLeftBtn");
+    const alignCenterBtn = document.getElementById("alignCenterBtn");
+    const align = post.textAlign || "center";
+    // Update the shared selectedAlignment variable via a click
+    if (align === "left") {
+      alignLeftBtn.click();
+    } else {
+      alignCenterBtn.click();
+    }
+
     // Store editing post ID globally
     window.currentEditPostId = postId;
     window.currentEditCoverUrl = post.coverImageUrl || "";

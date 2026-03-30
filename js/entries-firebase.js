@@ -140,7 +140,10 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
         <a class="w-full ${
           isGrid ? "h-full" : "max-w-3xl"
         } group" href="story.html?slug=${slug}" data-slug="${slug}">
-          <div class="${cardClass}">
+          <div class="${cardClass} relative">
+            <button class="share-btn absolute top-3 right-3 p-2 rounded-full text-warm-brown/25 hover:text-warm-brown/60 hover:bg-warm-brown/5 transition-all z-10" data-share-title="${title}" data-share-slug="${slug}" title="Share">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
             <div class="text-center mb-${isGrid ? "4" : "8"}">
               <h3 class="font-script text-${
                 isGrid ? "3xl" : "4xl"
@@ -180,6 +183,66 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
   });
 
   postsContainer.innerHTML = html;
+
+  // Share button handlers
+  postsContainer.querySelectorAll(".share-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Remove any existing share menu
+      document.querySelectorAll(".share-menu").forEach((m) => m.remove());
+
+      const title = btn.dataset.shareTitle;
+      const url = `${window.location.origin}/story.html?slug=${btn.dataset.shareSlug}`;
+
+      const menu = document.createElement("div");
+      menu.className = "share-menu";
+      menu.style.cssText = "position:absolute;top:100%;right:0;background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:6px 0;box-shadow:0 4px 16px rgba(0,0,0,0.08);z-index:50;min-width:150px;font-family:sans-serif;font-size:13px;";
+
+      const copyItem = document.createElement("button");
+      copyItem.textContent = "Copy link";
+      copyItem.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;padding:8px 14px;border:none;background:none;cursor:pointer;color:#5a4a3a;text-align:left;";
+      copyItem.onmouseenter = () => copyItem.style.background = "rgba(0,0,0,0.04)";
+      copyItem.onmouseleave = () => copyItem.style.background = "none";
+      copyItem.addEventListener("click", async (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        await navigator.clipboard.writeText(url);
+        copyItem.textContent = "Copied!";
+        setTimeout(() => menu.remove(), 1000);
+      });
+      menu.appendChild(copyItem);
+
+      if (navigator.share) {
+        const shareItem = document.createElement("button");
+        shareItem.textContent = "Share...";
+        shareItem.style.cssText = "display:flex;align-items:center;gap:8px;width:100%;padding:8px 14px;border:none;background:none;cursor:pointer;color:#5a4a3a;text-align:left;";
+        shareItem.onmouseenter = () => shareItem.style.background = "rgba(0,0,0,0.04)";
+        shareItem.onmouseleave = () => shareItem.style.background = "none";
+        shareItem.addEventListener("click", async (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          try { await navigator.share({ title, url }); } catch {}
+          menu.remove();
+        });
+        menu.appendChild(shareItem);
+      }
+
+      const rect = btn.getBoundingClientRect();
+      menu.style.position = "fixed";
+      menu.style.top = `${rect.bottom + 4}px`;
+      menu.style.right = `${window.innerWidth - rect.right}px`;
+      document.body.appendChild(menu);
+
+      const closeMenu = (ev) => {
+        if (!menu.contains(ev.target) && ev.target !== btn) {
+          menu.remove();
+          document.removeEventListener("click", closeMenu);
+        }
+      };
+      setTimeout(() => document.addEventListener("click", closeMenu), 0);
+    });
+  });
 }
 
 // Search functionality
