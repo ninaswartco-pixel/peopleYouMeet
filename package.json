@@ -1,0 +1,25 @@
+{
+  "name": "peopleyoumeet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ninaswartco-pixel/peopleYouMeet.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ninaswartco-pixel/peopleYouMeet/issues"
+  },
+  "homepage": "https://github.com/ninaswartco-pixel/peopleYouMeet#readme",
+  "devDependencies": {
+    "vite": "^8.0.3"
+  }
+}

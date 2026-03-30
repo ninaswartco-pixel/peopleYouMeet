@@ -74,8 +74,13 @@ const loadStory = async () => {
         storyDate.textContent = "DATE UNAVAILABLE";
       }
 
-      // Set content
-      storyContent.innerHTML = `<p class="text-xl leading-relaxed text-warm-brown/80">${data.content}</p>`;
+      // Set content — render HTML from old posts, convert newlines for plain-text posts
+      const raw = data.content || "";
+      const hasHtml = /<[a-z][\s\S]*>/i.test(raw);
+      const formatted = hasHtml
+        ? raw
+        : raw.replace(/\n/g, "<br>");
+      storyContent.innerHTML = `<div class="text-xl leading-relaxed text-warm-brown/80">${formatted}</div>`;
 
       // Handle cover image
       if (data.coverImageUrl) {

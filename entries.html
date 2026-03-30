@@ -59,9 +59,16 @@
       /* Grid layout styles */
       .grid-layout {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         column-gap: 1.5rem;
         row-gap: 0.005rem;
+      }
+
+      /* Tablet and larger devices: 3 columns */
+      @media (min-width: 640px) {
+        .grid-layout {
+          grid-template-columns: repeat(3, 1fr);
+        }
       }
 
       .grid-layout article {

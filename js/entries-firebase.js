@@ -121,10 +121,13 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
         })
       : "";
     const content = post.content || "";
+    // Strip HTML tags for preview, keep plain text with spacing
+    const plainContent = content.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    const maxLen = isGrid ? 120 : 160;
     const preview =
-      content.length > (isGrid ? 120 : 160)
-        ? content.slice(0, isGrid ? 117 : 157) + "..."
-        : content;
+      plainContent.length > maxLen
+        ? plainContent.slice(0, maxLen - 3) + "..."
+        : plainContent;
     const coverImageUrl = post.coverImageUrl;
     const slug = post.slug || post.id;
 

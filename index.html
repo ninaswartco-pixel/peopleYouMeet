@@ -108,13 +108,76 @@
   </head>
   <body class="text-white overflow-hidden">
     <!-- Loading Spinner -->
+    <style>
+      @keyframes typewriter-cursor {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+      @keyframes float-heart {
+        0% { transform: translateY(0) scale(1); opacity: 0.7; }
+        50% { transform: translateY(-12px) scale(1.1); opacity: 1; }
+        100% { transform: translateY(0) scale(1); opacity: 0.7; }
+      }
+      @keyframes loading-dots {
+        0% { content: ''; }
+        25% { content: '.'; }
+        50% { content: '..'; }
+        75% { content: '...'; }
+      }
+      .loading-dot-anim::after {
+        content: '';
+        animation: loading-dots 1.5s steps(1) infinite;
+      }
+      .float-heart { animation: float-heart 2s ease-in-out infinite; }
+      .float-heart:nth-child(2) { animation-delay: 0.4s; }
+      .float-heart:nth-child(3) { animation-delay: 0.8s; }
+    </style>
     <div
       id="loading-spinner"
-      class="fixed inset-0 bg-black flex items-center justify-center z-50"
+      class="fixed inset-0 bg-[#f5e8d6] flex flex-col items-center justify-center z-50 gap-5"
     >
-      <div
-        class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white"
-      ></div>
+      <!-- Typewriter Icon -->
+      <div class="relative flex flex-col items-center">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Paper -->
+          <rect x="18" y="6" width="28" height="24" rx="2" fill="#fff" stroke="rgba(184,84,11,0.5)" stroke-width="1.5"/>
+          <!-- Paper lines -->
+          <line x1="23" y1="14" x2="41" y2="14" stroke="rgba(184,84,11,0.25)" stroke-width="1"/>
+          <line x1="23" y1="18" x2="38" y2="18" stroke="rgba(184,84,11,0.25)" stroke-width="1"/>
+          <line x1="23" y1="22" x2="35" y2="22" stroke="rgba(184,84,11,0.25)" stroke-width="1"/>
+          <!-- Cursor blinking on paper -->
+          <rect x="23" y="26" width="8" height="1.5" rx="0.5" fill="rgba(184,84,11,0.6)">
+            <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+          </rect>
+          <!-- Typewriter body -->
+          <rect x="10" y="30" width="44" height="18" rx="4" fill="rgba(184,84,11,0.15)" stroke="rgba(184,84,11,0.4)" stroke-width="1.5"/>
+          <!-- Keys row 1 -->
+          <rect x="16" y="34" width="5" height="4" rx="1" fill="rgba(184,84,11,0.25)"/>
+          <rect x="23" y="34" width="5" height="4" rx="1" fill="rgba(184,84,11,0.25)"/>
+          <rect x="30" y="34" width="5" height="4" rx="1" fill="rgba(184,84,11,0.25)"/>
+          <rect x="37" y="34" width="5" height="4" rx="1" fill="rgba(184,84,11,0.25)"/>
+          <rect x="44" y="34" width="5" height="4" rx="1" fill="rgba(184,84,11,0.25)"/>
+          <!-- Keys row 2 -->
+          <rect x="18" y="40" width="5" height="4" rx="1" fill="rgba(184,84,11,0.2)"/>
+          <rect x="25" y="40" width="5" height="4" rx="1" fill="rgba(184,84,11,0.2)"/>
+          <rect x="32" y="40" width="5" height="4" rx="1" fill="rgba(184,84,11,0.2)"/>
+          <rect x="39" y="40" width="5" height="4" rx="1" fill="rgba(184,84,11,0.2)"/>
+          <!-- Platen knob -->
+          <circle cx="12" cy="32" r="2.5" fill="rgba(184,84,11,0.3)" stroke="rgba(184,84,11,0.5)" stroke-width="1"/>
+          <circle cx="52" cy="32" r="2.5" fill="rgba(184,84,11,0.3)" stroke="rgba(184,84,11,0.5)" stroke-width="1"/>
+        </svg>
+        <!-- Floating hearts -->
+        <div class="absolute -top-2 left-0 flex gap-3">
+          <span class="float-heart text-lg" style="color: rgba(184,84,11,0.45);">&hearts;</span>
+          <span class="float-heart text-sm" style="color: rgba(184,84,11,0.3);">&hearts;</span>
+          <span class="float-heart text-xs" style="color: rgba(184,84,11,0.35);">&hearts;</span>
+        </div>
+      </div>
+      <!-- Loading text -->
+      <span
+        class="loading-dot-anim tracking-[0.3em] uppercase text-xs font-light"
+        style="color: rgba(184,84,11,0.6); font-family: 'Montserrat', sans-serif;"
+      >loading</span>
     </div>
     <main
       class="loading-content relative h-screen w-full flex items-center justify-center overflow-hidden"
@@ -126,8 +189,9 @@
         <div class="text-center flex flex-col items-center gap-4">
           <div class="space-y-1">
             <h1
-              class="text-white text-6xl md:text-8xl font-script leading-tight drop-shadow-2xl select-none"
+              class="text-6xl md:text-8xl font-script leading-tight drop-shadow-2xl select-none"
               style="
+                color: rgba(255, 255, 255, 0.75);
                 word-break: keep-all;
                 hyphens: none;
                 min-height: 1.2em;
@@ -365,7 +429,7 @@
     </script>
     <div
       id="login-modal"
-      class="hidden fixed inset-0 z-[200] bg-white/40 backdrop-blur-sm flex items-center justify-center p-6 transition-opacity duration-300"
+      class="hidden fixed inset-0 z-[200] bg-transparent flex items-center justify-center p-6 transition-opacity duration-300"
     >
       <div
         class="relative shadow-2xl p-4 flex flex-col gap-3 border border-slate-200 text-[#3a1f0b]"
@@ -389,6 +453,9 @@
         <h2 class="text-xl font-bold text-center mb-2" style="color: #3a1f0b">
           The Secret Writing Room
         </h2>
+        <p class="italic text-center mb-2" style="color: #3a1f0b">
+          This space is reserved for the author.
+        </p>
         <form id="login-form" class="flex flex-col gap-4">
           <input
             id="login-email"
