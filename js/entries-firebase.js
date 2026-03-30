@@ -136,7 +136,7 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
 
     const cardClass = isGrid
       ? "story-card bg-white/40 border border-warm-brown/5 rounded-2xl p-3 md:p-4 shadow-sm transition-all hover:shadow-md hover:bg-white/60 h-full flex flex-col"
-      : "bg-white/40 border border-warm-brown/5 rounded-2xl p-3 md:p-4 lg:p-6 shadow-sm transition-all hover:shadow-md hover:bg-white/60";
+      : "bg-white/40 border border-warm-brown/5 rounded-xl md:rounded-2xl p-2 md:p-4 lg:p-6 shadow-sm transition-all hover:shadow-md hover:bg-white/60";
 
     html += `
       <article class="w-full ${isGrid ? "" : "flex flex-col items-center"}">
@@ -144,7 +144,7 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
           isGrid ? "h-full" : "max-w-3xl"
         } group" href="story.html?slug=${slug}" data-slug="${slug}">
           <div class="${cardClass} relative">
-            <div class="absolute top-3 right-3 flex gap-1 z-10">
+            <div class="absolute top-2 right-2 md:top-3 md:right-3 flex gap-1 z-10 ${isGrid ? "grid-mobile-hide" : ""}">
               <button class="like-btn p-2 rounded-full hover:text-red-500 transition-all" style="color:${liked ? "#ef4444" : "rgba(92,64,51,0.25)"}" data-post-id="${postId}" title="Like">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${liked ? "currentColor" : "none"}" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               </button>
@@ -152,35 +152,41 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
               </button>
             </div>
-            <div class="text-center mb-${isGrid ? "3" : "4 md:mb-8"}">
-              <h3 class="font-script ${
-                isGrid ? "text-2xl md:text-3xl" : "text-3xl md:text-4xl"
-              } text-dark-brown mb-1">${title}</h3>
-              <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-burnt-orange font-semibold">${dateStr}</p>
-            </div>
             ${
-              coverImageUrl
-                ? `<div class="mb-${
-                    isGrid ? "3" : "4 md:mb-6"
-                  } aspect-[7/5] overflow-hidden rounded-xl shadow ${
-                    isGrid ? "flex-shrink-0" : ""
-                  }">
+              isGrid && coverImageUrl
+                ? `<div class="grid-mobile-image mb-0 sm:mb-3 aspect-[7/5] overflow-hidden rounded-xl sm:rounded-xl shadow flex-shrink-0">
                     <img alt="${title}" class="w-full h-full object-cover" src="${coverImageUrl}" loading="lazy" />
+                  </div>
+                  <div class="grid-mobile-title text-center mb-0 sm:mb-3 pt-1">
+                    <h3 class="font-script text-2xl md:text-3xl text-dark-brown mb-0">${title}</h3>
+                    <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-burnt-orange font-semibold hidden sm:block">${dateStr}</p>
                   </div>`
-                : ""
+                : `<div class="text-center mb-2 md:mb-8">
+                    <h3 class="font-script ${
+                      isGrid ? "text-2xl md:text-3xl" : "text-2xl md:text-4xl"
+                    } text-dark-brown mb-0.5">${title}</h3>
+                    <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-burnt-orange font-semibold">${dateStr}</p>
+                  </div>
+                  ${
+                    coverImageUrl
+                      ? `<div class="mb-2 md:mb-6 aspect-[7/5] overflow-hidden rounded-lg md:rounded-xl shadow">
+                          <img alt="${title}" class="w-full h-full object-cover" src="${coverImageUrl}" loading="lazy" />
+                        </div>`
+                      : ""
+                  }`
             }
             <div class="max-w-2xl mx-auto text-center ${
-              isGrid ? "story-content flex-1 flex flex-col justify-between" : ""
+              isGrid ? "story-content flex-1 flex flex-col justify-between grid-mobile-hide" : ""
             }">
-              <p class="text-${
+              <p class="text-sm md:text-${
                 isGrid ? "base" : "lg"
-              } leading-relaxed text-warm-brown/80 mb-4 italic ${
-                isGrid ? "line-clamp-3" : ""
+              } leading-relaxed text-warm-brown/80 mb-2 md:mb-4 italic ${
+                isGrid ? "line-clamp-3" : "line-clamp-3 md:line-clamp-none"
               }">${preview}</p>
               <div class="flex justify-center">
-                <span class="inline-flex items-center gap-2 font-sans text-xs uppercase tracking-widest font-bold text-burnt-orange hover:text-soft-terracotta transition-colors">
+                <span class="inline-flex items-center gap-2 font-sans text-[10px] md:text-xs uppercase tracking-widest font-bold text-burnt-orange hover:text-soft-terracotta transition-colors">
                   Read More
-                  <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                  <span class="material-symbols-outlined text-[16px] md:text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
                 </span>
               </div>
             </div>

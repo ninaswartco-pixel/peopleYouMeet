@@ -60,14 +60,15 @@
       .grid-layout {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        column-gap: 1.5rem;
-        row-gap: 0.005rem;
+        gap: 1px;
       }
 
-      /* Tablet and larger devices: 3 columns */
+      /* Tablet and larger: add gaps back, 3 columns */
       @media (min-width: 640px) {
         .grid-layout {
           grid-template-columns: repeat(3, 1fr);
+          column-gap: 1.5rem;
+          row-gap: 0.5rem;
         }
       }
 
@@ -87,6 +88,58 @@
         min-height: 0;
         max-height: none;
         overflow: visible;
+      }
+
+      /* Mobile: tighter vertical list */
+      @media (max-width: 639px) {
+        #firebase-posts.flex.flex-col {
+          gap: 12px !important;
+        }
+        #firebase-posts.flex.flex-col article {
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+      }
+
+      /* Mobile grid: tight cards with 3D image effect */
+      @media (max-width: 639px) {
+        .grid-layout {
+          row-gap: 2px !important;
+        }
+        .grid-layout .story-card {
+          border-radius: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          box-shadow: none !important;
+          background: transparent !important;
+        }
+        .grid-layout .story-card .grid-mobile-hide {
+          display: none !important;
+        }
+        .grid-layout .story-card .grid-mobile-image {
+          border-radius: 10px !important;
+          margin: 0 !important;
+          aspect-ratio: 1 / 1;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1) !important;
+          transform: scale(0.96);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .grid-layout .story-card .grid-mobile-image:active {
+          transform: scale(0.94);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+        }
+        .grid-layout .story-card .grid-mobile-title {
+          padding: 3px 6px 0 !important;
+          margin: 0 !important;
+        }
+        .grid-layout .story-card .grid-mobile-title h3 {
+          font-size: 1rem !important;
+          margin: 0 !important;
+          line-height: 1.2 !important;
+        }
+        .grid-layout .story-card .grid-mobile-title p {
+          font-size: 8px !important;
+        }
       }
 
       /* Smooth transitions */
@@ -194,15 +247,15 @@
         </div>
       </div>
     </header>
-    <main class="max-w-[1400px] mx-auto px-3 md:px-8 py-3 md:py-6">
+    <main class="max-w-[1400px] mx-auto px-0 sm:px-3 md:px-8 py-2 md:py-6">
       <h1
         id="siteTitle"
-        class="font-script text-4xl md:text-6xl lg:text-7xl text-center mb-1 md:mb-2"
+        class="font-script text-4xl md:text-6xl lg:text-7xl text-center mb-1 md:mb-2 px-3 sm:px-0"
         style="color: var(--burnt-orange, #bf5700)"
       >
         The Person I met in ...
       </h1>
-      <div id="firebase-posts" class="flex flex-col gap-1 md:gap-2 mb-4"></div>
+      <div id="firebase-posts" class="flex flex-col gap-0 md:gap-2 mb-4"></div>
     </main>
     <footer
       class="mt-10 md:mt-20 border-t border-warm-brown/10 bg-warm-beige/30 py-6 md:py-8 px-4 md:px-6 text-center"
