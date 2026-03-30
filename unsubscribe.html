@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Unsubscribe - The People You Meet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "warm-cream": "#FDFBF7",
+              "warm-brown": "#5C4033",
+              "burnt-orange": "#BF5700",
+            },
+            fontFamily: {
+              script: ["Great Vibes", "cursive"],
+              sans: ["Montserrat", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-warm-cream min-h-screen flex items-center justify-center p-6 font-sans text-warm-brown">
+    <div class="max-w-sm w-full text-center">
+      <h1 class="font-script text-4xl text-burnt-orange mb-4">The People You Meet</h1>
+      <div id="loading" class="text-warm-brown/60 text-sm">Processing your request...</div>
+      <div id="result" class="hidden">
+        <p id="resultMsg" class="text-warm-brown/80 text-sm mb-6"></p>
+        <a href="entries.html" class="text-burnt-orange text-sm hover:underline">Back to stories</a>
+      </div>
+    </div>
+    <script type="module">
+      import { unsubscribeByToken } from "./js/subscribe.js";
+
+      const token = new URLSearchParams(window.location.search).get("token");
+      const loading = document.getElementById("loading");
+      const result = document.getElementById("result");
+      const resultMsg = document.getElementById("resultMsg");
+
+      if (!token) {
+        loading.classList.add("hidden");
+        resultMsg.textContent = "Invalid unsubscribe link.";
+        result.classList.remove("hidden");
+      } else {
+        try {
+          const res = await unsubscribeByToken(token);
+          loading.classList.add("hidden");
+          resultMsg.textContent = res.message;
+          result.classList.remove("hidden");
+        } catch (err) {
+          loading.classList.add("hidden");
+          resultMsg.textContent = "Something went wrong. Please try again.";
+          result.classList.remove("hidden");
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -127,6 +127,13 @@
               />
             </div>
             <div class="flex items-center gap-4">
+              <!-- Subscribe Button -->
+              <button
+                id="subscribeToggleBtn"
+                class="font-sans text-[10px] uppercase tracking-[0.2em] text-warm-brown/50 hover:text-burnt-orange transition-colors font-medium px-3 py-1.5 border border-warm-brown/10 rounded-full hover:border-burnt-orange/30"
+              >
+                Subscribe
+              </button>
               <!-- View Toggle -->
               <div
                 class="flex items-center gap-1 bg-warm-beige/50 rounded-full p-1"
@@ -339,6 +346,98 @@
         confirmationMessage.classList.remove("hidden");
       });
     </script>
+    <!-- Subscribe/Unsubscribe Modal -->
+    <div
+      id="subscribeModal"
+      class="hidden fixed inset-0 bg-warm-brown/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+    >
+      <div
+        class="bg-warm-cream border-none rounded-3xl shadow-2xl max-w-sm w-full p-10 relative"
+      >
+        <button
+          id="subscribeModalClose"
+          class="absolute top-5 right-5 text-warm-brown/50 hover:text-burnt-orange transition-colors"
+        >
+          <span class="material-symbols-outlined text-[22px]">close</span>
+        </button>
+
+        <!-- Subscribe View -->
+        <div id="subscribeView">
+          <h2 class="font-script text-3xl text-burnt-orange mb-2">Stay in the loop</h2>
+          <p class="text-warm-brown/60 font-sans text-sm mb-6">
+            Get notified when Carla shares a new story.
+          </p>
+          <div id="subscribeConfirm" class="mb-5">
+            <p class="text-warm-brown/70 font-sans text-sm mb-4">Would you like to receive email updates?</p>
+            <button
+              id="subscribeYesBtn"
+              class="w-full bg-burnt-orange text-white font-sans text-sm uppercase tracking-wider py-3 rounded-2xl hover:bg-burnt-orange/90 transition-all font-medium shadow-sm mb-3"
+            >
+              Yes, subscribe me
+            </button>
+            <button
+              id="subscribeShowUnsub"
+              class="w-full text-warm-brown/50 font-sans text-xs hover:text-burnt-orange transition-colors"
+            >
+              I want to unsubscribe
+            </button>
+          </div>
+
+          <!-- Email Input (shown after "Yes") -->
+          <form id="subscribeForm" class="hidden">
+            <input
+              id="subscribeEmail"
+              type="email"
+              placeholder="Your email address"
+              required
+              class="w-full px-5 py-3 bg-white/60 border-none rounded-2xl text-warm-brown font-sans text-sm focus:ring-2 focus:ring-burnt-orange/40 focus:outline-none shadow-sm mb-4"
+            />
+            <button
+              type="submit"
+              class="w-full bg-burnt-orange text-white font-sans text-sm uppercase tracking-wider py-3 rounded-2xl hover:bg-burnt-orange/90 transition-all font-medium shadow-sm"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+
+        <!-- Unsubscribe View -->
+        <div id="unsubscribeView" class="hidden">
+          <h2 class="font-script text-3xl text-burnt-orange mb-2">Unsubscribe</h2>
+          <p class="text-warm-brown/60 font-sans text-sm mb-6">
+            Enter your email to unsubscribe from updates.
+          </p>
+          <form id="unsubscribeForm">
+            <input
+              id="unsubscribeEmail"
+              type="email"
+              placeholder="Your email address"
+              required
+              class="w-full px-5 py-3 bg-white/60 border-none rounded-2xl text-warm-brown font-sans text-sm focus:ring-2 focus:ring-burnt-orange/40 focus:outline-none shadow-sm mb-4"
+            />
+            <button
+              type="submit"
+              class="w-full bg-warm-brown/10 text-warm-brown font-sans text-sm uppercase tracking-wider py-3 rounded-2xl hover:bg-warm-brown/20 transition-all font-medium mb-3"
+            >
+              Unsubscribe
+            </button>
+            <button
+              type="button"
+              id="backToSubscribe"
+              class="w-full text-warm-brown/50 font-sans text-xs hover:text-burnt-orange transition-colors"
+            >
+              Back to subscribe
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Message -->
+        <div id="subscribeResult" class="hidden text-center py-4">
+          <p id="subscribeResultMsg" class="text-warm-brown/80 font-sans text-sm"></p>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="js/firebase-init.js"></script>
     <script type="module" src="js/entries-firebase.js"></script>
     <script src="js/scripts.js"></script>
@@ -437,6 +536,102 @@
       }
 
       loadThemeColor();
+    </script>
+    <script type="module">
+      import { subscribe, unsubscribeByEmail } from "./js/subscribe.js";
+
+      const modal = document.getElementById("subscribeModal");
+      const toggleBtn = document.getElementById("subscribeToggleBtn");
+      const closeBtn = document.getElementById("subscribeModalClose");
+      const subscribeView = document.getElementById("subscribeView");
+      const unsubscribeView = document.getElementById("unsubscribeView");
+      const confirmSection = document.getElementById("subscribeConfirm");
+      const subscribeForm = document.getElementById("subscribeForm");
+      const unsubscribeForm = document.getElementById("unsubscribeForm");
+      const resultDiv = document.getElementById("subscribeResult");
+      const resultMsg = document.getElementById("subscribeResultMsg");
+      const yesBtn = document.getElementById("subscribeYesBtn");
+      const showUnsubBtn = document.getElementById("subscribeShowUnsub");
+      const backBtn = document.getElementById("backToSubscribe");
+
+      function resetModal() {
+        subscribeView.classList.remove("hidden");
+        unsubscribeView.classList.add("hidden");
+        confirmSection.classList.remove("hidden");
+        subscribeForm.classList.add("hidden");
+        resultDiv.classList.add("hidden");
+        subscribeForm.reset();
+        unsubscribeForm.reset();
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        resetModal();
+        modal.classList.remove("hidden");
+      });
+
+      closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) modal.classList.add("hidden");
+      });
+
+      yesBtn.addEventListener("click", () => {
+        confirmSection.classList.add("hidden");
+        subscribeForm.classList.remove("hidden");
+      });
+
+      showUnsubBtn.addEventListener("click", () => {
+        subscribeView.classList.add("hidden");
+        unsubscribeView.classList.remove("hidden");
+      });
+
+      backBtn.addEventListener("click", () => {
+        unsubscribeView.classList.add("hidden");
+        subscribeView.classList.remove("hidden");
+        confirmSection.classList.remove("hidden");
+        subscribeForm.classList.add("hidden");
+      });
+
+      subscribeForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("subscribeEmail").value.trim();
+        if (!email) return;
+        const btn = subscribeForm.querySelector("button[type=submit]");
+        btn.textContent = "Subscribing...";
+        btn.disabled = true;
+        try {
+          const result = await subscribe(email);
+          subscribeView.classList.add("hidden");
+          resultMsg.textContent = result.message;
+          resultDiv.classList.remove("hidden");
+        } catch (err) {
+          resultMsg.textContent = "Something went wrong. Please try again.";
+          subscribeView.classList.add("hidden");
+          resultDiv.classList.remove("hidden");
+        }
+        btn.textContent = "Subscribe";
+        btn.disabled = false;
+      });
+
+      unsubscribeForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("unsubscribeEmail").value.trim();
+        if (!email) return;
+        const btn = unsubscribeForm.querySelector("button[type=submit]");
+        btn.textContent = "Removing...";
+        btn.disabled = true;
+        try {
+          const result = await unsubscribeByEmail(email);
+          unsubscribeView.classList.add("hidden");
+          resultMsg.textContent = result.message;
+          resultDiv.classList.remove("hidden");
+        } catch (err) {
+          resultMsg.textContent = "Something went wrong. Please try again.";
+          unsubscribeView.classList.add("hidden");
+          resultDiv.classList.remove("hidden");
+        }
+        btn.textContent = "Unsubscribe";
+        btn.disabled = false;
+      });
     </script>
   </body>
 </html>
