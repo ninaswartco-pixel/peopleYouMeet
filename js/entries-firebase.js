@@ -135,8 +135,8 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
     const liked = hasLiked(postId);
 
     const cardClass = isGrid
-      ? "story-card bg-white/40 border border-warm-brown/5 rounded-2xl p-4 shadow-sm transition-all hover:shadow-md hover:bg-white/60 h-full flex flex-col"
-      : "bg-white/40 border border-warm-brown/5 rounded-2xl p-4 md:p-6 shadow-sm transition-all hover:shadow-md hover:bg-white/60";
+      ? "story-card bg-white/40 border border-warm-brown/5 rounded-2xl p-3 md:p-4 shadow-sm transition-all hover:shadow-md hover:bg-white/60 h-full flex flex-col"
+      : "bg-white/40 border border-warm-brown/5 rounded-2xl p-3 md:p-4 lg:p-6 shadow-sm transition-all hover:shadow-md hover:bg-white/60";
 
     html += `
       <article class="w-full ${isGrid ? "" : "flex flex-col items-center"}">
@@ -152,16 +152,16 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
               </button>
             </div>
-            <div class="text-center mb-${isGrid ? "4" : "8"}">
-              <h3 class="font-script text-${
-                isGrid ? "3xl" : "4xl"
-              } text-dark-brown mb-2">${title}</h3>
+            <div class="text-center mb-${isGrid ? "3" : "4 md:mb-8"}">
+              <h3 class="font-script ${
+                isGrid ? "text-2xl md:text-3xl" : "text-3xl md:text-4xl"
+              } text-dark-brown mb-1">${title}</h3>
               <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-burnt-orange font-semibold">${dateStr}</p>
             </div>
             ${
               coverImageUrl
                 ? `<div class="mb-${
-                    isGrid ? "4" : "6"
+                    isGrid ? "3" : "4 md:mb-6"
                   } aspect-[7/5] overflow-hidden rounded-xl shadow ${
                     isGrid ? "flex-shrink-0" : ""
                   }">

@@ -97,23 +97,19 @@
   </head>
   <body class="min-h-screen selection:bg-burnt-orange/20">
     <header
-      class="sticky top-0 z-50 bg-warm-cream/90 backdrop-blur-md border-b border-warm-brown/10 px-6 py-4"
+      class="sticky top-0 z-50 bg-warm-cream/90 backdrop-blur-md border-b border-warm-brown/10 px-4 md:px-6 py-3"
     >
       <div class="max-w-[1400px] mx-auto">
+        <!-- Top row: back arrow, search, subscribe -->
         <div class="flex items-center justify-between">
           <a
             class="flex items-center gap-2 group text-warm-brown/70 hover:text-burnt-orange transition-colors"
             href="index.html"
           >
-            <span class="material-symbols-outlined text-[20px]"
-              >arrow_back</span
-            >
-            <span
-              class="font-sans text-xs uppercase tracking-widest font-medium"
-              >Home</span
-            >
+            <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+            <span class="font-sans text-xs uppercase tracking-widest font-medium hidden md:inline">Home</span>
           </a>
-          <div class="flex items-center gap-6">
+          <div class="flex items-center gap-3 md:gap-6">
             <div class="relative hidden sm:block">
               <span
                 class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-warm-brown/40 text-[20px]"
@@ -126,47 +122,30 @@
                 type="text"
               />
             </div>
-            <div class="flex items-center gap-4">
-              <!-- Subscribe Button -->
-              <button
-                id="subscribeToggleBtn"
-                class="font-sans text-[10px] uppercase tracking-[0.2em] text-warm-brown/50 hover:text-burnt-orange transition-colors font-medium px-3 py-1.5 border border-warm-brown/10 rounded-full hover:border-burnt-orange/30"
-              >
-                Subscribe
-              </button>
-              <!-- View Toggle -->
-              <div
-                class="flex items-center gap-1 bg-warm-beige/50 rounded-full p-1"
-              >
+            <!-- Desktop: view toggle + sort inline -->
+            <div class="hidden md:flex items-center gap-4">
+              <div class="flex items-center gap-1 bg-warm-beige/50 rounded-full p-1">
                 <button
-                  id="verticalViewBtn"
+                  id="verticalViewBtnDesktop"
                   class="view-toggle-btn active p-2 rounded-full transition-all"
                   data-view="vertical"
                   title="Vertical View"
                 >
-                  <span class="material-symbols-outlined text-[20px]"
-                    >view_agenda</span
-                  >
+                  <span class="material-symbols-outlined text-[20px]">view_agenda</span>
                 </button>
                 <button
-                  id="gridViewBtn"
+                  id="gridViewBtnDesktop"
                   class="view-toggle-btn p-2 rounded-full transition-all"
                   data-view="grid"
                   title="Grid View"
                 >
-                  <span class="material-symbols-outlined text-[20px]"
-                    >grid_view</span
-                  >
+                  <span class="material-symbols-outlined text-[20px]">grid_view</span>
                 </button>
               </div>
-
               <div class="flex items-center gap-2">
-                <span
-                  class="font-sans text-[10px] uppercase tracking-tighter text-warm-brown/50"
-                  >Sort by</span
-                >
+                <span class="font-sans text-[10px] uppercase tracking-tighter text-warm-brown/50">Sort by</span>
                 <select
-                  id="sortSelect"
+                  id="sortSelectDesktop"
                   class="bg-transparent border-none text-sm font-sans font-semibold text-warm-brown focus:ring-0 cursor-pointer hover:text-burnt-orange py-0"
                 >
                   <option value="new">New Faces</option>
@@ -174,22 +153,59 @@
                 </select>
               </div>
             </div>
+            <button
+              id="subscribeToggleBtn"
+              class="font-sans text-[10px] uppercase tracking-[0.2em] text-warm-brown/50 hover:text-burnt-orange transition-colors font-medium px-3 py-1.5 border border-warm-brown/10 rounded-full hover:border-burnt-orange/30"
+            >
+              Subscribe
+            </button>
+          </div>
+        </div>
+        <!-- Second row on mobile, hidden on desktop (shown inline in top row via JS/CSS) -->
+        <div class="flex items-center justify-between mt-2 md:hidden">
+          <div class="flex items-center gap-1 bg-warm-beige/50 rounded-full p-1">
+            <button
+              id="verticalViewBtn"
+              class="view-toggle-btn active p-1.5 md:p-2 rounded-full transition-all"
+              data-view="vertical"
+              title="Vertical View"
+            >
+              <span class="material-symbols-outlined text-[18px] md:text-[20px]">view_agenda</span>
+            </button>
+            <button
+              id="gridViewBtn"
+              class="view-toggle-btn p-1.5 md:p-2 rounded-full transition-all"
+              data-view="grid"
+              title="Grid View"
+            >
+              <span class="material-symbols-outlined text-[18px] md:text-[20px]">grid_view</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="font-sans text-[10px] uppercase tracking-tighter text-warm-brown/50">Sort by</span>
+            <select
+              id="sortSelect"
+              class="bg-transparent border-none text-sm font-sans font-semibold text-warm-brown focus:ring-0 cursor-pointer hover:text-burnt-orange py-0"
+            >
+              <option value="new">New Faces</option>
+              <option value="old">Old Faces</option>
+            </select>
           </div>
         </div>
       </div>
     </header>
-    <main class="max-w-[1400px] mx-auto px-4 md:px-8 py-6">
+    <main class="max-w-[1400px] mx-auto px-3 md:px-8 py-3 md:py-6">
       <h1
         id="siteTitle"
-        class="font-script text-6xl md:text-7xl text-center mb-2"
+        class="font-script text-4xl md:text-6xl lg:text-7xl text-center mb-1 md:mb-2"
         style="color: var(--burnt-orange, #bf5700)"
       >
         The Person I met in ...
       </h1>
-      <div id="firebase-posts" class="flex flex-col gap-2 mb-4"></div>
+      <div id="firebase-posts" class="flex flex-col gap-1 md:gap-2 mb-4"></div>
     </main>
     <footer
-      class="mt-20 border-t border-warm-brown/10 bg-warm-beige/30 py-8 px-6 text-center"
+      class="mt-10 md:mt-20 border-t border-warm-brown/10 bg-warm-beige/30 py-6 md:py-8 px-4 md:px-6 text-center"
     >
       <div class="max-w-[1400px] mx-auto flex flex-col items-center gap-6">
         <div>
@@ -544,6 +560,33 @@
       }
 
       loadThemeColor();
+    </script>
+    <script>
+      // Sync desktop and mobile view/sort controls
+      (function() {
+        const pairs = [
+          ["verticalViewBtn", "verticalViewBtnDesktop"],
+          ["gridViewBtn", "gridViewBtnDesktop"],
+        ];
+        pairs.forEach(([mobileId, desktopId]) => {
+          const desktop = document.getElementById(desktopId);
+          const mobile = document.getElementById(mobileId);
+          if (desktop && mobile) {
+            desktop.addEventListener("click", () => mobile.click());
+          }
+        });
+        const sortMobile = document.getElementById("sortSelect");
+        const sortDesktop = document.getElementById("sortSelectDesktop");
+        if (sortDesktop && sortMobile) {
+          sortDesktop.addEventListener("change", () => {
+            sortMobile.value = sortDesktop.value;
+            sortMobile.dispatchEvent(new Event("change"));
+          });
+          sortMobile.addEventListener("change", () => {
+            sortDesktop.value = sortMobile.value;
+          });
+        }
+      })();
     </script>
     <script type="module">
       import { subscribe, unsubscribeByEmail } from "./js/subscribe.js";

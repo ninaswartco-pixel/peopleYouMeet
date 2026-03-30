@@ -55,11 +55,22 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+      /* Mobile: tighter, more condensed story text */
+      @media (max-width: 767px) {
+        .story-detail-content p,
+        .story-detail-content div {
+          font-size: 16px !important;
+          line-height: 1.6 !important;
+        }
+        .story-detail-content {
+          padding: 0 4px;
+        }
+      }
     </style>
   </head>
   <body class="min-h-screen selection:bg-burnt-orange/20">
     <header
-      class="sticky top-0 z-50 bg-warm-cream/90 backdrop-blur-md border-b border-warm-brown/10 px-6 py-4"
+      class="sticky top-0 z-50 bg-warm-cream/90 backdrop-blur-md border-b border-warm-brown/10 px-4 md:px-6 py-3"
     >
       <div class="max-w-[1400px] mx-auto flex items-center justify-between">
         <a
@@ -67,18 +78,18 @@
           href="entries.html"
         >
           <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-          <span class="font-sans text-xs uppercase tracking-widest font-medium"
+          <span class="font-sans text-xs uppercase tracking-widest font-medium hidden md:inline"
             >Back to Entries</span
           >
         </a>
       </div>
     </header>
-    <main class="max-w-[1400px] mx-auto px-4 md:px-8 py-16">
+    <main class="max-w-[1400px] mx-auto px-3 md:px-8 py-6 md:py-16">
       <div id="storyContainer">
         <article class="w-full flex flex-col items-center">
           <div class="w-full max-w-6xl">
             <div
-              class="story-detail-card bg-white/40 border border-warm-brown/5 rounded-2xl p-8 md:p-12 shadow-sm relative"
+              class="story-detail-card bg-white/40 border border-warm-brown/5 rounded-2xl p-4 md:p-8 lg:p-12 shadow-sm relative"
             >
               <div class="absolute top-5 right-5 flex gap-1">
                 <button id="storyLikeBtn" class="p-2 rounded-full text-warm-brown/30 hover:text-red-500 transition-all" title="Like">
@@ -88,10 +99,10 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                 </button>
               </div>
-              <div class="text-center mb-10">
+              <div class="text-center mb-6 md:mb-10">
                 <h1
                   id="storyTitle"
-                  class="story-detail-title font-script text-6xl text-dark-brown mb-2"
+                  class="story-detail-title font-script text-4xl md:text-5xl lg:text-6xl text-dark-brown mb-1 md:mb-2"
                 ></h1>
                 <p
                   id="storyDate"
@@ -100,7 +111,7 @@
               </div>
               <div
                 id="imageCarousel"
-                class="story-detail-image relative mb-10 max-w-2xl mx-auto"
+                class="story-detail-image relative mb-6 md:mb-10 max-w-3xl mx-auto"
               >
                 <!-- Images will be dynamically added here -->
               </div>
