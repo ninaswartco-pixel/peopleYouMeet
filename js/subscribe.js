@@ -1,67 +1,34 @@
 // js/subscribe.js
-// Handle newsletter subscribe/unsubscribe via Firestore
+// Newsletter subscribe/unsubscribe. The work happens in Cloud Functions
+// (functions/index.js), not in the browser.
 
-import { db } from "./firebase-init.js";
-import {
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs,
-  deleteDoc,
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { app } from "./firebase-init.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-functions.js";
 
-const subscribersRef = collection(db, "subscribers");
+const functions = getFunctions(app);
 
-// Generate a simple unsubscribe token
-function generateToken() {
-  return crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2) + Date.now().toString(36);
+function call(name) {
+  return httpsCallable(functions, name);
 }
 
 // Subscribe an email
 export async function subscribe(email) {
-  // Check if already subscribed
-  const q = query(subscribersRef, where("email", "==", email.toLowerCase()));
-  const existing = await getDocs(q);
-  if (!existing.empty) {
-    return { success: false, message: "You're already subscribed!" };
-  }
-
-  const token = generateToken();
-  // Store email locally so likes can identify this subscriber
-  localStorage.setItem("subscriberEmail", email.toLowerCase());
-  await addDoc(subscribersRef, {
-    email: email.toLowerCase(),
-    token,
-    subscribedAt: new Date(),
-  });
-
-  return { success: true, message: "You're subscribed! You'll be notified when Carla posts." };
+  const cleaned = email.trim().toLowerCase();
+  const res = await call("subscribe")({ email: cleaned });
+  // Remember the email on this browser so likes can identify this subscriber
+  localStorage.setItem("subscriberEmail", cleaned);
+  return res.data;
 }
 
-// Unsubscribe by token
+// Unsubscribe by token (from the link in the email)
 export async function unsubscribeByToken(token) {
-  const q = query(subscribersRef, where("token", "==", token));
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) {
-    return { success: false, message: "Subscription not found or already removed." };
-  }
-  for (const docSnap of snapshot.docs) {
-    await deleteDoc(docSnap.ref);
-  }
-  return { success: true, message: "You've been unsubscribed. You won't receive further emails." };
+  const res = await call("unsubscribeByToken")({ token });
+  return res.data;
 }
 
 // Unsubscribe by email (also clears local subscriber state)
 export async function unsubscribeByEmail(email) {
   localStorage.removeItem("subscriberEmail");
-  const q = query(subscribersRef, where("email", "==", email.toLowerCase()));
-  const snapshot = await getDocs(q);
-  if (snapshot.empty) {
-    return { success: false, message: "This email is not subscribed." };
-  }
-  for (const docSnap of snapshot.docs) {
-    await deleteDoc(docSnap.ref);
-  }
-  return { success: true, message: "You've been unsubscribed successfully." };
+  const res = await call("unsubscribeByEmail")({ email: email.trim().toLowerCase() });
+  return res.data;
 }
