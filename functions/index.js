@@ -1,10 +1,13 @@
 const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
+const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { randomUUID } = require("crypto");
 const { defineString } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const { Resend } = require("resend");
 
 admin.initializeApp();
 const db = admin.firestore();
+const FieldValue = admin.firestore.FieldValue;
 
 // Set your Resend API key as a Firebase secret/config:
 //   firebase functions:secrets:set RESEND_API_KEY
@@ -141,4 +144,122 @@ exports.onPostUpdated = onDocumentUpdated("posts/{postId}", async (event) => {
   if (!before.published && after.published) {
     await notifySubscribers(after);
   }
+});
+
+// ---------------------------------------------------------------------------
+// Callable functions: the browser calls these instead of touching the
+// subscribers or likes collections directly. Firestore rules block the browser
+// from reading or writing subscribers, so these run with admin rights.
+// ---------------------------------------------------------------------------
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function cleanEmail(value) {
+  return typeof value === "string" ? value.trim().toLowerCase() : "";
+}
+
+function isShortText(value, max) {
+  return typeof value === "string" && value.length > 0 && value.length <= max;
+}
+
+// Subscribe an email (duplicate check happens here, on the server)
+exports.subscribe = onCall(async (request) => {
+  const email = cleanEmail(request.data && request.data.email);
+  if (!EMAIL_RE.test(email) || email.length > 200) {
+    throw new HttpsError("invalid-argument", "Please enter a valid email address.");
+  }
+
+  const existing = await db.collection("subscribers").where("email", "==", email).limit(1).get();
+  if (!existing.empty) {
+    return { success: false, message: "You're already subscribed!" };
+  }
+
+  await db.collection("subscribers").add({
+    email,
+    token: randomUUID(),
+    subscribedAt: FieldValue.serverTimestamp(),
+  });
+  return { success: true, message: "You're subscribed! You'll be notified when Carla posts." };
+});
+
+// Unsubscribe using the token from the email link
+exports.unsubscribeByToken = onCall(async (request) => {
+  const token = request.data && request.data.token;
+  if (!isShortText(token, 100)) {
+    return { success: false, message: "Subscription not found or already removed." };
+  }
+
+  const snapshot = await db.collection("subscribers").where("token", "==", token).get();
+  if (snapshot.empty) {
+    return { success: false, message: "Subscription not found or already removed." };
+  }
+  await Promise.all(snapshot.docs.map((d) => d.ref.delete()));
+  return { success: true, message: "You've been unsubscribed. You won't receive further emails." };
+});
+
+// Unsubscribe using the email address typed into the site
+exports.unsubscribeByEmail = onCall(async (request) => {
+  const email = cleanEmail(request.data && request.data.email);
+  if (!EMAIL_RE.test(email) || email.length > 200) {
+    throw new HttpsError("invalid-argument", "Please enter a valid email address.");
+  }
+
+  const snapshot = await db.collection("subscribers").where("email", "==", email).get();
+  if (snapshot.empty) {
+    return { success: false, message: "This email is not subscribed." };
+  }
+  await Promise.all(snapshot.docs.map((d) => d.ref.delete()));
+  return { success: true, message: "You've been unsubscribed successfully." };
+});
+
+// Like a post. Subscribers are identified by their email (checked against the
+// subscribers list here); everyone else gives a name or stays "Anonymous".
+exports.likePost = onCall(async (request) => {
+  const data = request.data || {};
+  if (!isShortText(data.postId, 200) || !isShortText(data.localId, 100)) {
+    throw new HttpsError("invalid-argument", "Missing post or visitor id.");
+  }
+
+  const postSnap = await db.collection("posts").doc(data.postId).get();
+  if (!postSnap.exists) {
+    throw new HttpsError("not-found", "This story could not be found.");
+  }
+
+  const likesRef = db.collection("posts").doc(data.postId).collection("likes");
+  const already = await likesRef.where("localId", "==", data.localId).limit(1).get();
+  if (!already.empty) {
+    return { liked: true };
+  }
+
+  const email = cleanEmail(data.email);
+  let isSubscriber = false;
+  if (EMAIL_RE.test(email)) {
+    const sub = await db.collection("subscribers").where("email", "==", email).limit(1).get();
+    isSubscriber = !sub.empty;
+  }
+
+  const typedName = typeof data.name === "string" ? data.name.trim().slice(0, 100) : "";
+  const likeData = {
+    localId: data.localId,
+    name: isSubscriber ? email : typedName || "Anonymous",
+    isSubscriber,
+    likedAt: FieldValue.serverTimestamp(),
+  };
+  if (isSubscriber) likeData.email = email;
+
+  await likesRef.add(likeData);
+  return { liked: true };
+});
+
+// Remove this visitor's like from a post
+exports.unlikePost = onCall(async (request) => {
+  const data = request.data || {};
+  if (!isShortText(data.postId, 200) || !isShortText(data.localId, 100)) {
+    throw new HttpsError("invalid-argument", "Missing post or visitor id.");
+  }
+
+  const likesRef = db.collection("posts").doc(data.postId).collection("likes");
+  const snap = await likesRef.where("localId", "==", data.localId).get();
+  await Promise.all(snap.docs.map((d) => d.ref.delete()));
+  return { liked: false };
 });
