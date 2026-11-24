@@ -1,0 +1,19 @@
+name: branch-order
+on:
+  pull_request:
+    branches: [dev, uat, prod]
+jobs:
+  branch-order:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch for target
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+        run: |
+          case "$BASE" in
+            dev)  [[ "$HEAD" == feature/* ]] || { echo "dev only accepts feature/* branches (got '$HEAD')"; exit 1; } ;;
+            uat)  [[ "$HEAD" == "dev" ]]  || { echo "uat only accepts dev (got '$HEAD')"; exit 1; } ;;
+            prod) [[ "$HEAD" == "uat" ]]  || { echo "prod only accepts uat (got '$HEAD')"; exit 1; } ;;
+          esac
+          echo "OK: $HEAD -> $BASE"
