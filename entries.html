@@ -104,14 +104,22 @@
       /* Mobile grid: tight cards with 3D image effect */
       @media (max-width: 639px) {
         .grid-layout {
-          row-gap: 2px !important;
+          row-gap: 0 !important;
+          column-gap: 1px !important;
+        }
+        .grid-layout article {
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: hidden;
         }
         .grid-layout .story-card {
           border-radius: 0 !important;
-          padding: 0 !important;
+          padding: 0 0 6px 0 !important;
           border: none !important;
           box-shadow: none !important;
           background: transparent !important;
+          min-height: 0 !important;
+          height: auto !important;
         }
         .grid-layout .story-card .grid-mobile-hide {
           display: none !important;
@@ -139,6 +147,9 @@
         }
         .grid-layout .story-card .grid-mobile-title p {
           font-size: 8px !important;
+        }
+        .grid-layout a {
+          height: auto !important;
         }
       }
 

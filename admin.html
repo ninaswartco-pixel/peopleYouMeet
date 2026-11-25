@@ -80,10 +80,10 @@
     </style>
   </head>
   <body class="min-h-screen flex flex-col relative">
-    <main class="max-w-5xl mx-auto px-6 py-20 flex-grow w-full">
-      <header class="text-center mb-24">
+    <main class="max-w-5xl mx-auto px-4 md:px-6 py-10 md:py-20 flex-grow w-full">
+      <header class="text-center mb-10 md:mb-24">
         <h1
-          class="text-6xl md:text-7xl font-script text-[var(--theme-primary)] mb-4"
+          class="text-4xl md:text-6xl lg:text-7xl font-script text-[var(--theme-primary)] mb-2 md:mb-4 whitespace-nowrap"
         >
           The Secret Room
         </h1>
@@ -94,29 +94,29 @@
           Welcome Author
         </p>
       </header>
-      <section class="mb-32">
+      <section class="mb-16 md:mb-32">
         <div
-          class="flex items-center justify-between mb-12 border-b border-slate-100 pb-6"
+          class="flex items-center justify-between mb-6 md:mb-12 border-b border-slate-100 pb-4 md:pb-6"
         >
           <h2
-            class="text-3xl tracking-tight text-[var(--theme-primary)] uppercase font-display"
+            class="text-xl md:text-3xl tracking-tight text-[var(--theme-primary)] uppercase font-display"
           >
             Edit Stories
           </h2>
           <button
             id="newNarrativeBtn"
-            class="text-[10px] uppercase tracking-widest font-bold bg-[var(--theme-primary)] text-white px-6 py-2"
+            class="text-[10px] uppercase tracking-widest font-bold bg-[var(--theme-primary)] text-white px-4 md:px-6 py-2"
           >
             New Narrative
           </button>
         </div>
-        <div id="storiesList" class="space-y-4"></div>
+        <div id="storiesList" class="space-y-2 md:space-y-4"></div>
       </section>
 
       <!-- Subscribers Section -->
-      <section class="border-t border-slate-100 pt-20">
-        <div class="flex items-center justify-between mb-8">
-          <h2 class="text-3xl tracking-tight text-[var(--theme-primary)] uppercase font-display">
+      <section class="border-t border-slate-100 pt-10 md:pt-20">
+        <div class="flex items-center justify-between mb-4 md:mb-8">
+          <h2 class="text-xl md:text-3xl tracking-tight text-[var(--theme-primary)] uppercase font-display">
             Subscribers
           </h2>
           <button
@@ -132,14 +132,14 @@
         </div>
       </section>
 
-      <section class="border-t border-slate-100 pt-20">
+      <section class="border-t border-slate-100 pt-10 md:pt-20">
         <h2
-          class="text-3xl tracking-tight mb-16 text-center text-[var(--theme-primary)] uppercase font-display"
+          class="text-xl md:text-3xl tracking-tight mb-8 md:mb-16 text-center text-[var(--theme-primary)] uppercase font-display"
         >
           Global Settings
         </h2>
         <div
-          class="max-w-2xl mx-auto space-y-8"
+          class="max-w-2xl mx-auto space-y-6 md:space-y-8"
         >
           <div class="space-y-2">
             <label

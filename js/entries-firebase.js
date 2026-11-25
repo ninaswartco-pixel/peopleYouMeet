@@ -157,7 +157,7 @@ function renderPosts(searchTerm = "", sortOrder = "new") {
                 ? `<div class="grid-mobile-image mb-0 sm:mb-3 aspect-[7/5] overflow-hidden rounded-xl sm:rounded-xl shadow flex-shrink-0">
                     <img alt="${title}" class="w-full h-full object-cover" src="${coverImageUrl}" loading="lazy" />
                   </div>
-                  <div class="grid-mobile-title text-center mb-0 sm:mb-3 pt-1">
+                  <div class="grid-mobile-title text-center mb-0 sm:mb-3 pt-0">
                     <h3 class="font-script text-2xl md:text-3xl text-dark-brown mb-0">${title}</h3>
                     <p class="font-sans text-[10px] uppercase tracking-[0.3em] text-burnt-orange font-semibold hidden sm:block">${dateStr}</p>
                   </div>`

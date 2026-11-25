@@ -58,18 +58,18 @@ export async function loadStories() {
 
       // Thumbnail HTML
       const thumbnailHtml = coverImageUrl
-        ? `<img alt="Thumbnail" class="w-16 h-16 object-cover grayscale group-hover:grayscale-0 transition-all" src="${coverImageUrl}" />`
-        : `<div class="w-16 h-16 bg-slate-100 flex items-center justify-center">
-             <span class="material-symbols-outlined text-slate-300">image</span>
+        ? `<img alt="Thumbnail" class="w-10 h-10 md:w-16 md:h-16 rounded object-cover grayscale group-hover:grayscale-0 transition-all" src="${coverImageUrl}" />`
+        : `<div class="w-10 h-10 md:w-16 md:h-16 rounded bg-slate-100 flex items-center justify-center">
+             <span class="material-symbols-outlined text-slate-300 text-sm md:text-base">image</span>
            </div>`;
 
       html += `
         <div class="border border-slate-50 hover:border-[var(--theme-primary)] transition-all bg-soft-grey">
-          <div class="group flex items-center justify-between p-6">
-            <div class="flex items-center gap-6 flex-1 cursor-pointer" data-edit-id="${postId}">
+          <div class="group flex items-center justify-between p-3 md:p-6">
+            <div class="flex items-center gap-3 md:gap-6 flex-1 cursor-pointer" data-edit-id="${postId}">
               ${thumbnailHtml}
               <div>
-                <h3 class="text-xl group-hover:text-[var(--theme-primary)] transition-colors">${title}</h3>
+                <h3 class="text-base md:text-xl group-hover:text-[var(--theme-primary)] transition-colors">${title}</h3>
                 <div class="flex items-center gap-3 mt-1">
                   <p class="text-[10px] uppercase tracking-widest text-slate-400">${statusLabel}</p>
                   <button class="likes-toggle inline-flex items-center gap-1 text-[10px] uppercase tracking-widest ${likeCount > 0 ? "text-red-400" : "text-slate-300"} hover:text-red-500 transition-colors cursor-pointer" data-post-id="${postId}" title="View who liked">
