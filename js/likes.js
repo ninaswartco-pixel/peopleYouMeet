@@ -1,16 +1,10 @@
 // js/likes.js
-// Handle post likes with identity tracking
+// Post likes. The work happens in Cloud Functions (functions/index.js).
 
-import { db } from "./firebase-init.js";
-import {
-  doc,
-  collection,
-  addDoc,
-  deleteDoc,
-  query,
-  where,
-  getDocs,
-} from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+import { app } from "./firebase-init.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-functions.js";
+
+const functions = getFunctions(app);
 
 // Unique local ID for this browser
 function getLocalId() {
@@ -48,33 +42,21 @@ function setLiked(postId, value) {
   } catch {}
 }
 
-// Add a like with identity info
+// Add a like (name is used only for visitors who are not subscribers)
 export async function addLike(postId, name) {
-  const localId = getLocalId();
-  const email = getSubscriberEmail();
-
-  const likeData = {
-    localId,
-    name: email || name || "Anonymous",
-    isSubscriber: !!email,
-    likedAt: new Date(),
-  };
-  if (email) likeData.email = email;
-
-  await addDoc(collection(db, "posts", postId, "likes"), likeData);
+  await httpsCallable(functions, "likePost")({
+    postId,
+    localId: getLocalId(),
+    name: name || "",
+    email: getSubscriberEmail() || "",
+  });
   setLiked(postId, true);
   return { liked: true };
 }
 
-// Remove a like
+// Remove this visitor's like
 export async function removeLike(postId) {
-  const localId = getLocalId();
-  const likesRef = collection(db, "posts", postId, "likes");
-  const q = query(likesRef, where("localId", "==", localId));
-  const snap = await getDocs(q);
-  for (const d of snap.docs) {
-    await deleteDoc(d.ref);
-  }
+  await httpsCallable(functions, "unlikePost")({ postId, localId: getLocalId() });
   setLiked(postId, false);
   return { liked: false };
 }
